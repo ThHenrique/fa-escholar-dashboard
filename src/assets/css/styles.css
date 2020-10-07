@@ -1,0 +1,39 @@
+.invalid-feedback {
+  padding: 5px;
+}
+
+.invalid-input {
+  border: 1px red solid;
+}
+
+.react-bootstrap-table-pagination {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: #fff !important;
+  content: "•" !important;
+}
+
+.page-item.active .page-link {
+  background-color: #172b4d;
+  border-color: #172b4d;
+}
+
+.itens{
+  height:43px;
+  width:100%;
+  font-size:15px;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.itens i {
+  margin-left: -10px;
+  margin-right: 10px;
+}
