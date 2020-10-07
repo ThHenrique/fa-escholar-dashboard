@@ -1,7 +1,7 @@
 {
-  "name": "argon-dashboard-react",
+  "name": "e-scholar-dashboard",
   "version": "3.4.3",
-  "description": "React version of Argon Dashboard by Creative Tim",
+  "description": "PI Fatec 2020",
   "main": "index.js",
   "repository": {
     "type": "git",
