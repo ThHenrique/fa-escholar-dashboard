@@ -84,7 +84,7 @@ export default function AdminNavbar() {
               )}
             >
               <FormGroup className="mb-0">
-                <InputGroup className="input-group-alternative input-group-merge">
+                <InputGroup className="input-group-alternative input-group-merge bg-secondary">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
                       <i className="fas fa-search" />
@@ -269,12 +269,12 @@ export default function AdminNavbar() {
               <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link pr-0" color="" tag="a">
                   <Media className="align-items-center">
-                    {/* <span className="avatar avatar-sm rounded-circle">
+                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="..."
-                        src={require("../assets/img/theme/team-3.jpg")}
+                        src={require("../assets/img/theme/team-1.jpg")}
                       />
-                    </span> */}
+                    </span> 
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
                         { localStorage.getItem('name') }
