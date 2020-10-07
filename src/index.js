@@ -4,13 +4,12 @@ import App from './App';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
-import "assets/plugins/nucleo/css/nucleo.css";
-import "assets/scss/argon-dashboard-react.scss";
+import "./assets/plugins/nucleo/css/nucleo.css";
+import "./assets/scss/argon-dashboard-react.scss";
 import 'react-notification-alert/dist/animate.css';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
-
-import './assets/scss/argon-dashboard-react.scss';
+import "./assets/plugins/nucleo/css/nucleo.css";
 import './assets/css/styles.css';
 
 ReactDOM.render(

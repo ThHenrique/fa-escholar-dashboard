@@ -168,7 +168,7 @@ class Sidebar extends React.Component {
         <div className="sidenav-header d-flex align-items-center">
           <NavbarBrand {...navbarBrandProps}>
             <img
-              alt="Logo e-SCHOLAR"
+              alt="Logo E-SCHOLAR"
               className="navbar-brand-img"
               src={logoImg}                                          
             />

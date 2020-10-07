@@ -40,7 +40,7 @@ export default function PageHeader({ name, parentName, parentPath, pathAdd }) {
   }
 
   return (
-    <div className="header bg-default pb-6">
+    <div className="header bg-default pb-6 pt-6">
       <Container fluid>
         <div className="header-body">
           <Row className="align-items-center py-4">
@@ -49,16 +49,16 @@ export default function PageHeader({ name, parentName, parentPath, pathAdd }) {
                 {name}
               </h6>{" "}
               <Breadcrumb
-                className="d-none d-md-inline-block ml-md-4"
-                listClassName="breadcrumb-links breadcrumb-dark"
+                className="d-none d-md-inline-block ml-md-4 bg-default"
+                listClassName="breadcrumb-links breadcrumb-dark bg-default "
               >
                 <BreadcrumbItem>
                   <Link to="/">
-                    <i className="fas fa-home" />
+                    <i className="fas fa-home text-white" />
                   </Link>
                 </BreadcrumbItem>
                 {parent()}
-                <BreadcrumbItem aria-current="page" className="active">
+                <BreadcrumbItem aria-current="page" className="active text-white">
                   {name}
                 </BreadcrumbItem>
               </Breadcrumb>

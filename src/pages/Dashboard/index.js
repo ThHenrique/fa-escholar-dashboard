@@ -48,7 +48,7 @@ class Dashboard extends React.Component {
     return (
       <>
         <CardsHeader name="Default" parentName="Dashboards" />
-        <Container className="mt--6" fluid>
+        <Container className="mt-6" fluid>
           <Row>
             <Col xl="8">
               <Card>
