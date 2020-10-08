@@ -1,4 +1,4 @@
-# BifeOn API
+# E-SCHOLAR-DASHBOARD
 
 ## Requisitos
 
