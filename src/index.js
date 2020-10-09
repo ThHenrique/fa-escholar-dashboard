@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from './App';
 
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
 import "./assets/plugins/nucleo/css/nucleo.css";
 import "./assets/scss/argon-dashboard-react.scss";
 import 'react-notification-alert/dist/animate.css';

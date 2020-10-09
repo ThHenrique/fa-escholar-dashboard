@@ -144,7 +144,8 @@ export default function ViewDiscipline({ match }) {
 
   return (
     <>
-      <PageHeader name="Aprovação de Anúncios" parentName="Anúncios" parentPath="ads" />
+      <PageHeader name="Nome da disciplina" parentName="Disciplinas" parentPath="discipline" />
+
 
       <Container className="mt--6" fluid>
         <Card className="bg-primary">

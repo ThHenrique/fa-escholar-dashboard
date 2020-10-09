@@ -81,15 +81,10 @@ export default function Discipline() {
 
   return (
     <>
-      <PageHeader name="Disciplinas"/>
+      <PageHeader name="Disciplinas" pathAdd="discipline" />
 
       <Container className="mt--6" fluid>
-      <Card className="bg-primary">
-        <CardBody>  
-        Olá Mundo
-        
-        </CardBody>
-        </Card>
+      
       </Container>
     </>
   )

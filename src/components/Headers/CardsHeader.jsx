@@ -77,10 +77,10 @@ class CardsHeader extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total traffic
+                            Total de Acesso
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            899
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -93,7 +93,7 @@ class CardsHeader extends React.Component {
                         <span className="text-success mr-2">
                           <i className="fa fa-arrow-up" /> 3.48%
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        <span className="text-nowrap">Desde o último mês</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -107,10 +107,10 @@ class CardsHeader extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            New users
+                            Novos Usuários
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            2,356
+                            53
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -123,7 +123,7 @@ class CardsHeader extends React.Component {
                         <span className="text-success mr-2">
                           <i className="fa fa-arrow-up" /> 3.48%
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        <span className="text-nowrap">Desde o último mês</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -137,7 +137,7 @@ class CardsHeader extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Sales
+                            Vendas
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">924</span>
                         </div>
@@ -151,7 +151,7 @@ class CardsHeader extends React.Component {
                         <span className="text-success mr-2">
                           <i className="fa fa-arrow-up" /> 3.48%
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        <span className="text-nowrap">Desde o último mês</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -165,7 +165,7 @@ class CardsHeader extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Performance
+                            Desempenho
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             49,65%
@@ -181,7 +181,7 @@ class CardsHeader extends React.Component {
                         <span className="text-success mr-2">
                           <i className="fa fa-arrow-up" /> 3.48%
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        <span className="text-nowrap">Desde o último mês</span>
                       </p>
                     </CardBody>
                   </Card>
