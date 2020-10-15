@@ -287,7 +287,6 @@ export default function AdminNavbar() {
                     <h6 className="text-overflow m-0">Bem vindo!</h6>
                   </DropdownItem>
                   <DropdownItem
-                    href="/discipline"
                     onClick={e => history.push('/profiles')}
                   >
                     <i className="ni ni-single-02" />

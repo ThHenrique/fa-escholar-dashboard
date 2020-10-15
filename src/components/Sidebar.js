@@ -210,15 +210,14 @@ class Sidebar extends React.Component {
               </NavItem>
               <NavItem
                 className={this.activeRoute("/discipline")}
-                key={2}
+                key={1}
               >
                 <NavLink
                   to="/discipline"
                   activeClassName={this.activeRoute("/discipline")}
                   onClick={this.closeSidenav}
                   tag={NavLinkRRD}
-                >
-              
+                >              
                   <>
                     <i className="ni ni-book-bookmark" />
                     <span className="nav-link-text">Conteúdos</span>
@@ -243,7 +242,7 @@ class Sidebar extends React.Component {
               </NavItem>
               <NavItem
                 className={this.activeRoute("/admins")}
-                key={1}
+                key={3}
               >
                 <NavLink
                   to="/admins"

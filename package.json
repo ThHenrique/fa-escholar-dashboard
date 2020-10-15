@@ -60,6 +60,7 @@
     "react-datetime": "2.16.3",
     "react-dom": "16.12.0",
     "react-google-maps": "9.4.5",
+    "react-multi-carousel": "^2.5.5",
     "react-notification-alert": "0.0.12",
     "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "5.1.2",
