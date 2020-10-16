@@ -1,0 +1,291 @@
+import React, { useState, useRef, useEffect } from "react";
+
+import {
+  Form,
+  FormGroup,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Button,
+  Card,
+  CardBody,
+  Container,
+  Col,
+  Row,
+  UncontrolledDropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  CardImg,
+} from "reactstrap";
+
+// import { useHistory } from "react-router-dom";
+import NotificationAlert from "react-notification-alert";
+import { Spinner } from "react-activity";
+import "../../assets/css/react-activity.css";
+// import Carousel from "react-multi-carousel";
+// import api from "../../services/api";
+import PageHeader from "../../components/PageHeader";
+
+import "react-multi-carousel/lib/styles.css";
+
+export default function NewDiscipline() {
+  const [load, setLoad] = useState("Salvar");
+  const [cont, setCont] = useState(0);
+  const [contAula, setContAula] = useState(0);
+  const [images, setImages] = useState([]);
+  const inputRef = useRef("notificationAlert");
+  const [discipline, setDiscipline] = useState({
+    name: "",
+    description: "",
+    session: [{
+      name: "",
+      lesson: [{
+        name: "",
+        description: "",
+      }],
+    }],
+  });
+
+  // const history = useHistory();
+  // const token = localStorage.getItem("token");
+
+  const updateField = (e) => {
+    console.log('');
+    const { id, value } = e.target;
+    setDiscipline(prevState => ({
+      ...prevState,
+      [id]: value
+    }))
+  };
+
+  useEffect(() => {
+    console.log(discipline);
+  }, [discipline]);
+
+  useEffect(() => {
+    // setSection(cont)
+    // setSection(section.push(cont))
+  }, [cont]);
+
+  const addSection = () => {
+    setDiscipline(prevState => ({
+      ...prevState,
+      session: [...prevState.section, {
+        name: 'aaaaaa'
+      }]
+    }))
+  };
+
+  async function handleNewDiscipline(e) {
+    e.preventDefault();
+
+    setLoad(<Spinner color="#FFF" />);
+
+    // notify("fas fa-check", "success", "Sucesso!", "Administrador cadastrado");
+
+    // notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao realizar o cadastro.");
+
+    setLoad("Salvar");
+  }
+
+  // const notify = (icon, type, title, message) => {
+  //   const options = {
+  //     place: "tr",
+  //     message: (
+  //       <div className="alert-text">
+  //         <span className="alert-title" data-notify="title">
+  //           {" "}
+  //           {title}
+  //         </span>
+  //         <span data-notify="message">
+  //           {message}
+  //         </span>
+  //       </div>
+  //     ),
+  //     type,
+  //     icon,
+  //     autoDismiss: 2,
+  //   };
+  //   inputRef.current.notificationAlert(options);
+  // };
+
+  async function handleImage(event) {
+    console.log(event);
+    const { target } = event;
+
+    console.log(event.target.files[0].size);
+    console.log(event.target.files[0]);
+
+    if (images.length >= 10 && target.value.length > 0) {
+      return alert("Número máximo de fotos Atingido(10/10)");
+    }
+
+    if (target.value.length > 0 && event.target.files[0].size <= 5000000) {
+      setImages([...images, event.target.files[0]]);
+    } else {
+      event.target.value = null;
+    }
+  }
+
+  async function removeImage(index) {
+    if (images.length === 1) {
+      return setImages([]);
+    }
+
+    const pivot = images.filter((item, iterableIndex) => index !== iterableIndex);
+    return setImages(pivot);
+  }
+
+  // const responsive = {
+  //   desktop: {
+  //     breakpoint: { max: 3000, min: 1024 },
+  //     items: 5,
+  //     slidesToSlide: 1, // optional, default to 1.
+  //   },
+  //   tablet: {
+  //     breakpoint: { max: 1024, min: 464 },
+  //     items: 2,
+  //     slidesToSlide: 1, // optional, default to 1.
+  //   },
+  //   mobile: {
+  //     breakpoint: { max: 464, min: 0 },
+  //     items: 1,
+  //     slidesToSlide: 1, // optional, default to 1.
+  //   },
+  // };
+
+  const Sessions = (props) => {
+    // const sessionsComponent = props.session.map(session => (
+    //   <Session key={session.id} sessions={session} />
+    // ));
+    return (
+    <Col md="12" sm="12">
+      <FormGroup>
+        <h3>
+          Seção
+        </h3>
+        {/* {sessionsComponent} */}
+        <InputGroup>
+          <Input
+            id="sessionName"
+            onChange={updateField}
+            value={discipline.session.name}
+            placeholder="Digite o nome da seção..."
+            type="text"
+            name="description"
+            required
+          />
+          <InputGroupAddon addonType="append">
+            <Button
+              color="primary"
+              outline
+              type="button"
+              onClick={() => setContAula(contAula + 1)}
+            >
+              Adicionar aula
+            </Button>
+            <Button
+              className="btn btn-icon btn-danger btn2"
+              onClick={() => { setCont(cont - 1); }}
+            >
+              <span className="btn-inner--icon">
+                <i className="fas fa-trash" />
+              </span>
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
+      </FormGroup>
+    </Col>
+    );
+  };
+
+  const Session = (props) => {
+    const sessionComponent = props.session.lesson.map(lesson => (
+      <Lesson key={lesson.id} lesson={lesson} />
+    ))
+    return (
+      <Col md={12} sm={12}>
+        <h3>Olá</h3>
+        {sessionComponent}
+      </Col>
+    )
+  }
+
+  const Lesson = (props) => {
+    return (
+      <Col md={12} sm={12}>
+        {props.name}
+      </Col>
+    )
+  }
+
+  return (
+    <>
+      <PageHeader name="Nova Disciplina" parentName="Disciplinas" parentPath="discipline" />
+
+      <Container className="mt--6" fluid>
+        <div className="rna-wrapper">
+          <NotificationAlert ref={inputRef} />
+        </div>
+        <Card className="card-frame">
+          <CardBody>
+            <Form onSubmit={handleNewDiscipline}>
+              <Row>
+                <Col md="12" sm="12">
+                  <FormGroup>
+                    <h3>Disciplina</h3>
+                    <Input
+                      id="name"
+                      placeholder="Digite o nome da disciplina..."
+                      type="text"
+                      onChange={updateField}
+                      value={discipline.name}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md="12" sm="12">
+                  <FormGroup>
+                    <h3>Descrição</h3>
+                    <Input
+                      id="description"
+                      placeholder="Adicione uma descrição"
+                      type="text"
+                      className="form-control-lg"
+                      onChange={updateField}
+                      value={discipline.description}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+
+
+                <Sessions props={discipline.session} />
+
+
+                <Col md="12" sm="12" className="ml-3">
+                  <Row className="align-items-center">
+                    <Button
+                      className="btn btn-icon-only"
+                      color="success"
+                      type="button"
+                      onClick={() => addSection}
+                    >
+                      <i className="ni ni-fat-add" />
+                    </Button>
+                    <h3>Adicionar seção</h3>
+                  </Row>
+                </Col>
+              </Row>
+
+              <Col className="mt-6">
+                <Button type="submit" color="default" block>{ load }</Button>
+              </Col>
+            </Form>
+          </CardBody>
+        </Card>
+      </Container>
+    </>
+  );
+}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from "react";
 
 import {
   Form,
@@ -13,133 +13,115 @@ import {
   Col,
   Row,
   UncontrolledDropdown,
-  UncontrolledCollapse,
   DropdownItem,
   DropdownMenu,
-  Collapse,
   DropdownToggle,
-  CardImg
+  CardImg,
 } from "reactstrap";
 
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import NotificationAlert from "react-notification-alert";
-import { Spinner } from 'react-activity';
-import '../../assets/css/react-activity.css';
-import api from '../../services/api';
-import PageHeader from '../../components/PageHeader';
+import { Spinner } from "react-activity";
+import "../../assets/css/react-activity.css";
+// import Carousel from "react-multi-carousel";
+// import api from "../../services/api";
+import PageHeader from "../../components/PageHeader";
 
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 export default function NewDiscipline() {
-  const [discipline, setDiscipline] = useState({
-    name : "",
-    description : "",
-    session : [{
-      name : "",
-      lesson : [{
-        name : "",
-        description : "",
-      }]
-    }]
-  })
+  const [load, setLoad] = useState("Salvar");
+  const [cont, setCont] = useState(0);
+  const [contAula, setContAula] = useState(0);
+  const [images, setImages] = useState([]);
+  const inputRef = useRef("notificationAlert");
 
-  const updateField = e => {
-    console.log(e.target.name);
-    setDiscipline({
-      ...discipline,
-      [e.target.name]: e.target.value
-    });
+
+  const [lesson, setLesson] = useState([{
+    name: "",
+    description: ""
+  }]);
+
+  const [session, setSession] = useState([{
+    name: "",
+    lesson
+  }]);
+
+  const [discipline, setDiscipline] = useState({
+    name: "",
+    description: "",
+    session,
+  });
+  // const history = useHistory();
+  // const token = localStorage.getItem("token");
+
+  const updateField = (e) => {
+    const { id, value } = e.target;
+    setDiscipline(prevState => ({
+      ...prevState,
+      [id]: value
+    }))
   };
 
   useEffect(() => {
-    console.log(`${discipline.name} MUDOU`);
-  }, [discipline.name])
-
-  const [name, setName] = useState('');
-
-  const [nameDiscipline, setNameDiscipline] = useState('');
-  const [lessonName, setLessonName] = useState('');
-  const [sessionName, setSessionName] = useState('');
-
-  const [descriptionDiscipline, setDescriptionDiscipline] = useState('');
+    let array = 1
 
 
-  const [last_name, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [load, setLoad] = useState('Salvar');
-  const [section, setSection] = useState([])
-  const [cont, setCont] = useState(0)
-  const [contAula, setContAula] = useState(0)
-  const [images, setImages] = useState([]);
-  const inputRef = useRef('notificationAlert');
+    // console.log(discipline);
+    // console.log(session);
+    // console.log(lesson);
 
-  const history = useHistory();
-
-  const token = localStorage.getItem('token');
+  }, [discipline, session, lesson]);
 
   useEffect(() => {
-    //setSection(cont)
+    // setSection(cont)
     // setSection(section.push(cont))
-  }, [cont])
+  }, [cont]);
+
+  const addSection = () => {
+    setDiscipline(prevState => ({
+      ...prevState,
+      session: [...prevState.section, {
+        name: 'aaaaaa'
+      }]
+    }))
+  };
 
   async function handleNewDiscipline(e) {
     e.preventDefault();
 
     setLoad(<Spinner color="#FFF" />);
 
-    const data = {
-      name,
-      last_name,
-      email,
-      password
-    }
+    // notify("fas fa-check", "success", "Sucesso!", "Administrador cadastrado");
 
-    try {
-      await api.post('admin/users', data, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+    // notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao realizar o cadastro.");
 
-      notify('fas fa-check', 'success', 'Sucesso!', 'Administrador cadastrado');
-
-      setTimeout(function(){ 
-        history.push('/admins');
-      }, 3000);
-    } catch (err) {
-      console.error(err);
-
-      notify('fas fa-times', 'danger', 'Erro!', 'Ocorreu um erro ao realizar o cadastro.');
-
-      setLoad('Salvar');
-    }
+    setLoad("Salvar");
   }
 
-  const notify = (icon, type, title, message) => {
-    let options = {
-      place: 'tr',
-      message: (
-        <div className="alert-text">
-          <span className="alert-title" data-notify="title">
-            {" "}
-            {title}
-          </span>
-          <span data-notify="message">
-            {message}
-          </span>
-        </div>
-      ),
-      type: type,
-      icon: icon,
-      autoDismiss: 2
-    };
-    inputRef.current.notificationAlert(options);
-  };
+  // const notify = (icon, type, title, message) => {
+  //   const options = {
+  //     place: "tr",
+  //     message: (
+  //       <div className="alert-text">
+  //         <span className="alert-title" data-notify="title">
+  //           {" "}
+  //           {title}
+  //         </span>
+  //         <span data-notify="message">
+  //           {message}
+  //         </span>
+  //       </div>
+  //     ),
+  //     type,
+  //     icon,
+  //     autoDismiss: 2,
+  //   };
+  //   inputRef.current.notificationAlert(options);
+  // };
 
   async function handleImage(event) {
-    console.log(event);
+    // console.log(event);
     const { target } = event;
 
     console.log(event.target.files[0].size);
@@ -161,49 +143,108 @@ export default function NewDiscipline() {
       return setImages([]);
     }
 
-    let pivot = images.filter((item, iterableIndex) => index !== iterableIndex);
-    setImages(pivot);
+    const pivot = images.filter((item, iterableIndex) => index !== iterableIndex);
+    return setImages(pivot);
   }
 
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 5,
-      slidesToSlide: 1, // optional, default to 1.
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-      slidesToSlide: 1, // optional, default to 1.
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-      slidesToSlide: 1, // optional, default to 1.
-    },
+  // const responsive = {
+  //   desktop: {
+  //     breakpoint: { max: 3000, min: 1024 },
+  //     items: 5,
+  //     slidesToSlide: 1, // optional, default to 1.
+  //   },
+  //   tablet: {
+  //     breakpoint: { max: 1024, min: 464 },
+  //     items: 2,
+  //     slidesToSlide: 1, // optional, default to 1.
+  //   },
+  //   mobile: {
+  //     breakpoint: { max: 464, min: 0 },
+  //     items: 1,
+  //     slidesToSlide: 1, // optional, default to 1.
+  //   },
+  // };
+
+  const Sessions = (props) => {
+    // const sessionsComponent = props.session.map(session => (
+    //   <Session key={session.id} sessions={session} />
+    // ));
+    return (
+    <Col md="12" sm="12">
+      <FormGroup>
+        <h3>
+          Seção
+        </h3>
+        {/* {sessionsComponent} */}
+        <InputGroup>
+          <Input
+            id="sessionName"
+            onChange={updateField}
+            value={discipline.session.name}
+            placeholder="Digite o nome da seção..."
+            type="text"
+            name="description"
+            required
+          />
+          <InputGroupAddon addonType="append">
+            <Button
+              color="primary"
+              outline
+              type="button"
+              onClick={() => setContAula(contAula + 1)}
+            >
+              Adicionar aula
+            </Button>
+            <Button
+              className="btn btn-icon btn-danger btn2"
+              onClick={() => { setCont(cont - 1); }}
+            >
+              <span className="btn-inner--icon">
+                <i className="fas fa-trash" />
+              </span>
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
+      </FormGroup>
+    </Col>
+    );
   };
 
-  const printValues = e => {
-    e.preventDefault();
-    console.log(discipline.name);
-  };
+  const Session = (props) => {
+    const sessionComponent = props.session.lesson.map(lesson => (
+      <Lesson key={lesson.id} lesson={lesson} />
+    ))
+    return (
+      <Col md={12} sm={12}>
+        <h3>Olá</h3>
+        {sessionComponent}
+      </Col>
+    )
+  }
 
+  const Lesson = (props) => {
+    return (
+      <Col md={12} sm={12}>
+        {props.name}
+      </Col>
+    )
+  }
 
   return (
     <>
       <PageHeader name="Nova Disciplina" parentName="Disciplinas" parentPath="discipline" />
-      
+
       <Container className="mt--6" fluid>
         <div className="rna-wrapper">
           <NotificationAlert ref={inputRef} />
         </div>
         <Card className="card-frame">
           <CardBody>
-            <Form onSubmit={printValues}>
+            <Form onSubmit={handleNewDiscipline}>
               <Row>
                 <Col md="12" sm="12">
                   <FormGroup>
-                    <h3 >Disciplina</h3>
+                    <h3>Disciplina</h3>
                     <Input
                       id="name"
                       placeholder="Digite o nome da disciplina..."
@@ -214,214 +255,226 @@ export default function NewDiscipline() {
                     />
                   </FormGroup>
                 </Col>
-                <Col md="12" sm="12"> 
+                <Col md="12" sm="12">
                   <FormGroup>
-                    <label htmlFor="description">Descrição</label>
-                    <Input 
+                    <h3>Descrição</h3>
+                    <Input
                       id="description"
                       placeholder="Adicione uma descrição"
                       type="text"
-                      name="description"                      
                       className="form-control-lg"
-                      onChange={e => setDescriptionDiscipline(e.target.value)}
-                      value={descriptionDiscipline}
+                      onChange={updateField}
+                      value={discipline.description}
                       required
                     />
-                  </FormGroup>  
-                </Col>                
-                {Array(cont).fill().map(item => (    
-                  <>
-                    <Col md="12" sm="12">                    
-                      <FormGroup>
-                        <h3>Seção {cont}</h3>                        
-                          <InputGroup>
-                            <Input 
-                              id="sessionName"
-                              onChange={e => setSessionName(e.target.value)}
-                              value={sessionName}
-                              placeholder="Digite o nome da seção..." 
-                              type="text" 
-                              name="description"  
-                              required
-                            />
-                            <InputGroupAddon addonType="append">
-                              <Button 
-                                color="primary" 
-                                outline 
-                                type="button"
-                                onClick={() => setContAula(contAula + 1)}
-                              >
-                                Adicionar aula
-                              </Button>
-                              <Button
-                                className="btn btn-icon btn-danger btn2"
-                                onClick={() => {setCont(cont - 1)}}                                
-                              >
-                                <span className="btn-inner--icon">
-                                  <i class="fas fa-trash" />
-                                </span>
-                              </Button>
-                            </InputGroupAddon>
-                          </InputGroup>
-                      </FormGroup>                 
-                    </Col>
-                    {Array(contAula).fill().map(item => (  
-                      <>
-                        <Col md="12" sm="12">                    
-                          <FormGroup>
-                            <h3>Aula</h3>                        
-                            <InputGroup>
-                              <Input 
-                                id="nameLession"
-                                value={lessonName}
-                                onChange={e => setLessonName(e.target.value)}
-                                placeholder="Digite o nome da Aula..." 
-                                type="text" 
-                              />
-                              <InputGroupAddon addonType="append">
-                                <UncontrolledDropdown  group>
-                                  <DropdownToggle 
-                                    color="primary" 
-                                    outline
-                                    style={{borderRadius: 0}}
-                                    className="btn2"
-                                  >                                  
-                                    Adicionar Conteúdo                                  
-                                  </DropdownToggle>
-                                  <DropdownMenu right>                                    
-                                    <DropdownItem
-                                      onClick={e => e.preventDefault()}
-                                    >
-                                      <i className="ni ni-single-copy-04" />
-                                      <span>Documento</span>
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                      <Button
-                                        className="button1"
-                                        color="#1B4263"
-                                        type="button"
-                                        tag="label"
-                                      >
-                                      <i className="ni ni-button-play" />
-                                      <span>Vídeo / Aúdio / Imagens </span>
-                                      <input
-                                        style={{ display: "none" }}
-                                        type="file"
-                                        accept="image/*"
-                                        inputProps={{ accept: "image/*" }}
-                                        multiple
-                                        name="image[]"
-                                        onChange={(event) => handleImage(event)}
-                                        />
-                                      </Button>
-                                    </DropdownItem>   
-                                  </DropdownMenu>
-                                </UncontrolledDropdown>                                
-                                <Button
-                                  className="btn btn-icon btn-danger btn2"
-                                  onClick={() => {setContAula(contAula - 1)}}                                
-                                >
-                                  <span className="btn-inner--icon">
-                                    <i class="fas fa-trash" />
-                                  </span>
-                                </Button>                                
-                              </InputGroupAddon>
-                            </InputGroup>
-                            <InputGroup className="mt-3">                            
-                              <Input 
-                                placeholder="Descrição e/ou comentários da aula..." 
-                                type="textarea"  
-                              />                              
-                            </InputGroup>
-                            <Col>
-                              <Button
-                                className="button1"
-                                color="#1B4263"
-                                type="button"
-                                tag="label"
-                              >
-                                Adicionar Foto ({images.length}/10)
-                                <input
-                                  style={{ display: "none" }}
-                                  type="file"
-                                  accept="image/*"
-                                  inputProps={{ accept: "image/*" }}
-                                  multiple
-                                  name="image[]"
-                                  onChange={(event) => handleImage(event)}
-                                />
-                              </Button>
-                            </Col>
-                          </FormGroup>                                          
-                        </Col>
-                        <Row>
+                  </FormGroup>
+                </Col>
 
-                              
-                                {images.map((file, index) => (
-                                  <>
-                                    <Card
-                                      style={{ width: "100%" }}
-                                      style={{ marginLeft: 2, marginTop: 15 }}
-                                    >
-                                      <CardImg
-                                        key={file}
-                                        id="background"
-                                        className={images ? "has-background" : ""}
-                                        style={{
-                                          backgroundImage: `url(${URL.createObjectURL(file)})`,
-                                          minHeight: 180,
-                                          width: "100%",
-                                          backgroundSize: "cover",
-                                          backgroundRepeat: "no-repeat",
-                                        }}
-                                      />
-                                      <CardBody className="text-center">
-                                        <Button
-                                          onClick={() => removeImage(index)}
-                                          className="btn btn-danger"
-                                        >
-                                          Remover
-                                        </Button>
-                                      </CardBody>
-                                    </Card>
-                                    <div
-                                      style={{
-                                        overflow: 'hidden',
-                                        whiteSpace: 'nowrap',
-                                        textOverflow: 'ellipsis',
-                                      }}>
-                                      {file.name}
-                                    </div>
-                                  </>
-                                ))}
-                              </Row>
-                      </>
-                    ))}             
-                  </> 
+                {session.map((item, index) => (
+                  <Col md="12" sm="12">
+                  <FormGroup>
+                    <h3>
+                      Sessão
+                    </h3>
+                    {/* {sessionsComponent} */}
+                    <InputGroup>
+                      <Input
+                        id="sessionName"
+                        onChange={updateField}
+                        value={discipline.session.name}
+                        placeholder="Digite o nome da seção..."
+                        type="text"
+                        name="description"
+                        required
+                      />
+                      <InputGroupAddon addonType="append">
+                        <Button
+                          color="primary"
+                          outline
+                          type="button"
+                          onClick={() => setContAula(contAula + 1)}
+                        >
+                          Adicionar aula
+                        </Button>
+                        <Button
+                          className="btn btn-icon btn-danger btn2"
+                          onClick={(e) => {
+                            console.log(index);
+                            const pivot = session.filter((item, iterableIndex) => index !== iterableIndex);
+                            setSession(pivot);
+                          }}
+                        >
+                          <span className="btn-inner--icon">
+                            <i className="fas fa-trash" />
+                          </span>
+                        </Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </FormGroup>
+                  {Array(contAula).fill().map(item => (
+                  <>
+                    <Col md="12" sm="12">
+                      <FormGroup>
+                        <h3>Aula</h3>
+                        <InputGroup>
+                          <Input
+                            id="nameLession"
+                            value={lesson.name}
+                            //onChange={e => setLessonName(e.target.value)}
+                            placeholder="Digite o nome da Aula..."
+                            type="text"
+                          />
+                          <InputGroupAddon addonType="append">
+                            <UncontrolledDropdown  group>
+                              <DropdownToggle
+                                color="primary"
+                                outline
+                                style={{borderRadius: 0}}
+                                className="btn2"
+                              >
+                                Adicionar Conteúdo
+                              </DropdownToggle>
+                              <DropdownMenu right>
+                                <DropdownItem
+                                  onClick={e => e.preventDefault()}
+                                >
+                                  <i className="ni ni-single-copy-04" />
+                                  <span>Documento</span>
+                                </DropdownItem>
+                                <DropdownItem>
+                                  <Button
+                                    className="button1"
+                                    color="#1B4263"
+                                    type="button"
+                                    tag="label"
+                                  >
+                                  <i className="ni ni-button-play" />
+                                  <span>Vídeo / Aúdio / Imagens </span>
+                                  <input
+                                    style={{ display: "none" }}
+                                    type="file"
+                                    accept="image/*"
+                                    inputProps={{ accept: "image/*" }}
+                                    multiple
+                                    name="image[]"
+                                    onChange={(event) => handleImage(event)}
+                                    />
+                                  </Button>
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                            <Button
+                              className="btn btn-icon btn-danger btn2"
+                              onClick={() => {setContAula(contAula - 1)}}
+                            >
+                              <span className="btn-inner--icon">
+                                <i class="fas fa-trash" />
+                              </span>
+                            </Button>
+                          </InputGroupAddon>
+                        </InputGroup>
+                        <InputGroup className="mt-3">
+                          <Input
+                            placeholder="Descrição e/ou comentários da aula..."
+                            type="textarea"
+                          />
+                        </InputGroup>
+                        <Col>
+                          <Button
+                            className="button1"
+                            color="#1B4263"
+                            type="button"
+                            tag="label"
+                          >
+                            Adicionar Foto ({images.length}/10)
+                            <input
+                              style={{ display: "none" }}
+                              type="file"
+                              accept="image/*"
+                              inputProps={{ accept: "image/*" }}
+                              multiple
+                              name="image[]"
+                              onChange={(event) => handleImage(event)}
+                            />
+                          </Button>
+                        </Col>
+                      </FormGroup>
+                    </Col>
+                    <Row>
+                      {images.map((file, index) => (
+                        <>
+                          <Card
+                            style={{ width: "100%" }}
+                            style={{ marginLeft: 2, marginTop: 15 }}
+                          >
+                            <CardImg
+                              key={file}
+                              id="background"
+                              className={images ? "has-background" : ""}
+                              style={{
+                                backgroundImage: `url(${URL.createObjectURL(file)})`,
+                                minHeight: 180,
+                                width: "100%",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                              }}
+                            />
+                            <CardBody className="text-center">
+                              <Button
+                                onClick={() => removeImage(index)}
+                                className="btn btn-danger"
+                              >
+                                Remover
+                              </Button>
+                            </CardBody>
+                          </Card>
+                          <div
+                            style={{
+                              overflow: 'hidden',
+                              whiteSpace: 'nowrap',
+                              textOverflow: 'ellipsis',
+                            }}>
+                            {file.name}
+                          </div>
+                        </>
+                      ))}
+                    </Row>
+                  </>
                 ))}
-                               
+              </Col>
+              ))}
+
+
+                {/* <Sessions props={discipline.session} /> */}
+
+
                 <Col md="12" sm="12" className="ml-3">
                   <Row className="align-items-center">
                     <Button
                       className="btn btn-icon-only"
                       color="success"
                       type="button"
-                      onClick={() => {setCont(cont + 1)}}
+                      onClick={e => {
+                        setSession([
+                          ...session,
+                          {name: ""}
+                        ])
+                      }}
                     >
-                      <i className="ni ni-fat-add"/>
+                      <i className="ni ni-fat-add" />
                     </Button>
-                    <h3>Adicionar seção</h3>                       
-                  </Row>                   
+                    <h3>Adicionar seção</h3>
+                  </Row>
                 </Col>
-              </Row> 
-              
-                <Col className="mt-6">
-                  <Button type="submit" color="default" block>{ load }</Button>
-                </Col>
+              </Row>
+
+              <Col className="mt-6">
+                <Button type="submit" color="default" block>{ load }</Button>
+              </Col>
             </Form>
           </CardBody>
         </Card>
       </Container>
     </>
-  )
+  );
 }
