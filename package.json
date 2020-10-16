@@ -2,11 +2,8 @@
   "name": "e-scholar-dashboard",
   "version": "3.4.3",
   "description": "PI Fatec 2020",
+  "private": true,
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
-  },
   "keywords": [
     "react",
     "reactjs",
@@ -18,11 +15,7 @@
     "argon-dashboard-react"
   ],
   "author": "Creative Tim",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
-  },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
+  "license": "MIT", 
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
