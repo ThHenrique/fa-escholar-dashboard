@@ -115,7 +115,7 @@ class CardsHeader extends React.Component {
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
-                            <i className="ni ni-chart-pie-35" />
+                            <i className="fa fa-users"/>
                           </div>
                         </Col>
                       </Row>

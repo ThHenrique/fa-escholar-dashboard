@@ -166,16 +166,13 @@ export default function NewDiscipline() {
   // };
 
   const Sessions = (props) => {
-    // const sessionsComponent = props.session.map(session => (
-    //   <Session key={session.id} sessions={session} />
-    // ));
     return (
-    <Col md="12" sm="12">
+      <Col md="12" sm="12">
       <FormGroup>
         <h3>
-          Seção
+          Sessão{" "}
+          {props.index}
         </h3>
-        {/* {sessionsComponent} */}
         <InputGroup>
           <Input
             id="sessionName"
@@ -191,13 +188,21 @@ export default function NewDiscipline() {
               color="primary"
               outline
               type="button"
-              onClick={() => setContAula(contAula + 1)}
+              onClick={e => {
+                setLesson([
+                  ...lesson,
+                  {name: ""}
+                ])
+              }}
             >
               Adicionar aula
             </Button>
             <Button
               className="btn btn-icon btn-danger btn2"
-              onClick={() => { setCont(cont - 1); }}
+              onClick={(e) => {
+                const pivot = session.filter((item, iterableIndex) => props.index !== iterableIndex);
+                setSession(pivot);
+              }}
             >
               <span className="btn-inner--icon">
                 <i className="fas fa-trash" />
@@ -206,7 +211,10 @@ export default function NewDiscipline() {
           </InputGroupAddon>
         </InputGroup>
       </FormGroup>
-    </Col>
+      {lesson.map((item, index) => (
+        <Lesson index={index}/>
+      ))}
+      </Col>
     );
   };
 
@@ -224,16 +232,151 @@ export default function NewDiscipline() {
 
   const Lesson = (props) => {
     return (
-      <Col md={12} sm={12}>
-        {props.name}
-      </Col>
+      <>
+        <Col md="12" sm="12">
+          <FormGroup>
+            <h3>Aula</h3>
+            <InputGroup>
+              <Input
+                id="nameLession"
+                value={lesson.name}
+                //onChange={e => setLessonName(e.target.value)}
+                placeholder="Digite o nome da Aula..."
+                type="text"
+              />
+              <InputGroupAddon addonType="append">
+                <UncontrolledDropdown  group>
+                  <DropdownToggle
+                    color="primary"
+                    outline
+                    style={{borderRadius: 0}}
+                    className="btn2"
+                  >
+                    Adicionar Conteúdo
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem
+                      onClick={e => e.preventDefault()}
+                    >
+                      <i className="ni ni-single-copy-04" />
+                      <span>Documento</span>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <Button
+                        className="button1"
+                        color="#1B4263"
+                        type="button"
+                        tag="label"
+                      >
+                      <i className="ni ni-button-play" />
+                      <span>Vídeo / Aúdio / Imagens </span>
+                      <input
+                        style={{ display: "none" }}
+                        type="file"
+                        accept="image/*"
+                        inputProps={{ accept: "image/*" }}
+                        multiple
+                        name="image[]"
+                        onChange={(event) => handleImage(event)}
+                        />
+                      </Button>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <Button
+                  className="btn btn-icon btn-danger btn2"
+                  onClick={() => {
+                    const pivot = lesson.filter((item, iterableIndex) => props.index !== iterableIndex);
+                    setLesson(pivot);
+                  }}
+                >
+                  <span className="btn-inner--icon">
+                    <i class="fas fa-trash" />
+                  </span>
+                </Button>
+              </InputGroupAddon>
+            </InputGroup>
+            <InputGroup className="mt-3">
+              <Input
+                placeholder="Descrição e/ou comentários da aula..."
+                value={lesson.description}
+                type="textarea"
+              />
+            </InputGroup>
+            <Col>
+              <Button
+                className="button1"
+                color="#1B4263"
+                type="button"
+                tag="label"
+              >
+                Adicionar Foto ({images.length}/10)
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  accept="image/*"
+                  inputProps={{ accept: "image/*" }}
+                  multiple
+                  name="image[]"
+                  onChange={(event) => handleImage(event)}
+                />
+              </Button>
+            </Col>
+          </FormGroup>
+        </Col>
+        <Row>
+          {images.map((file, index) => (
+            <Images file={file} index={index}/>
+          ))}
+        </Row>
+      </>
     )
   }
+
+  const Images = (props) => {
+    return (
+      <>
+        <Card
+          style={{ width: "100%" }}
+          style={{ marginLeft: 2, marginTop: 15 }}
+        >
+          <CardImg
+            key={props.file}
+            id="background"
+            className={props.images ? "has-background" : ""}
+            style={{
+              backgroundImage: `url(${URL.createObjectURL(props.file)})`,
+              minHeight: 180,
+              width: "100%",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          <CardBody className="text-center">
+            <Button
+              onClick={() => removeImage(props.index)}
+              className="btn btn-danger"
+            >
+              Remover
+            </Button>
+          </CardBody>
+        </Card>
+        <div
+          style={{
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}>
+          {props.file.name}
+        </div>
+      </>
+    );
+  }
+
 
   return (
     <>
       <PageHeader name="Nova Disciplina" parentName="Disciplinas" parentPath="discipline" />
-
       <Container className="mt--6" fluid>
         <div className="rna-wrapper">
           <NotificationAlert ref={inputRef} />
@@ -269,185 +412,9 @@ export default function NewDiscipline() {
                     />
                   </FormGroup>
                 </Col>
-
                 {session.map((item, index) => (
-                  <Col md="12" sm="12">
-                  <FormGroup>
-                    <h3>
-                      Sessão
-                    </h3>
-                    {/* {sessionsComponent} */}
-                    <InputGroup>
-                      <Input
-                        id="sessionName"
-                        onChange={updateField}
-                        value={discipline.session.name}
-                        placeholder="Digite o nome da seção..."
-                        type="text"
-                        name="description"
-                        required
-                      />
-                      <InputGroupAddon addonType="append">
-                        <Button
-                          color="primary"
-                          outline
-                          type="button"
-                          onClick={() => setContAula(contAula + 1)}
-                        >
-                          Adicionar aula
-                        </Button>
-                        <Button
-                          className="btn btn-icon btn-danger btn2"
-                          onClick={(e) => {
-                            console.log(index);
-                            const pivot = session.filter((item, iterableIndex) => index !== iterableIndex);
-                            setSession(pivot);
-                          }}
-                        >
-                          <span className="btn-inner--icon">
-                            <i className="fas fa-trash" />
-                          </span>
-                        </Button>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </FormGroup>
-                  {Array(contAula).fill().map(item => (
-                  <>
-                    <Col md="12" sm="12">
-                      <FormGroup>
-                        <h3>Aula</h3>
-                        <InputGroup>
-                          <Input
-                            id="nameLession"
-                            value={lesson.name}
-                            //onChange={e => setLessonName(e.target.value)}
-                            placeholder="Digite o nome da Aula..."
-                            type="text"
-                          />
-                          <InputGroupAddon addonType="append">
-                            <UncontrolledDropdown  group>
-                              <DropdownToggle
-                                color="primary"
-                                outline
-                                style={{borderRadius: 0}}
-                                className="btn2"
-                              >
-                                Adicionar Conteúdo
-                              </DropdownToggle>
-                              <DropdownMenu right>
-                                <DropdownItem
-                                  onClick={e => e.preventDefault()}
-                                >
-                                  <i className="ni ni-single-copy-04" />
-                                  <span>Documento</span>
-                                </DropdownItem>
-                                <DropdownItem>
-                                  <Button
-                                    className="button1"
-                                    color="#1B4263"
-                                    type="button"
-                                    tag="label"
-                                  >
-                                  <i className="ni ni-button-play" />
-                                  <span>Vídeo / Aúdio / Imagens </span>
-                                  <input
-                                    style={{ display: "none" }}
-                                    type="file"
-                                    accept="image/*"
-                                    inputProps={{ accept: "image/*" }}
-                                    multiple
-                                    name="image[]"
-                                    onChange={(event) => handleImage(event)}
-                                    />
-                                  </Button>
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </UncontrolledDropdown>
-                            <Button
-                              className="btn btn-icon btn-danger btn2"
-                              onClick={() => {setContAula(contAula - 1)}}
-                            >
-                              <span className="btn-inner--icon">
-                                <i class="fas fa-trash" />
-                              </span>
-                            </Button>
-                          </InputGroupAddon>
-                        </InputGroup>
-                        <InputGroup className="mt-3">
-                          <Input
-                            placeholder="Descrição e/ou comentários da aula..."
-                            type="textarea"
-                          />
-                        </InputGroup>
-                        <Col>
-                          <Button
-                            className="button1"
-                            color="#1B4263"
-                            type="button"
-                            tag="label"
-                          >
-                            Adicionar Foto ({images.length}/10)
-                            <input
-                              style={{ display: "none" }}
-                              type="file"
-                              accept="image/*"
-                              inputProps={{ accept: "image/*" }}
-                              multiple
-                              name="image[]"
-                              onChange={(event) => handleImage(event)}
-                            />
-                          </Button>
-                        </Col>
-                      </FormGroup>
-                    </Col>
-                    <Row>
-                      {images.map((file, index) => (
-                        <>
-                          <Card
-                            style={{ width: "100%" }}
-                            style={{ marginLeft: 2, marginTop: 15 }}
-                          >
-                            <CardImg
-                              key={file}
-                              id="background"
-                              className={images ? "has-background" : ""}
-                              style={{
-                                backgroundImage: `url(${URL.createObjectURL(file)})`,
-                                minHeight: 180,
-                                width: "100%",
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat",
-                              }}
-                            />
-                            <CardBody className="text-center">
-                              <Button
-                                onClick={() => removeImage(index)}
-                                className="btn btn-danger"
-                              >
-                                Remover
-                              </Button>
-                            </CardBody>
-                          </Card>
-                          <div
-                            style={{
-                              overflow: 'hidden',
-                              whiteSpace: 'nowrap',
-                              textOverflow: 'ellipsis',
-                            }}>
-                            {file.name}
-                          </div>
-                        </>
-                      ))}
-                    </Row>
-                  </>
+                  <Sessions index={index}/>
                 ))}
-              </Col>
-              ))}
-
-
-                {/* <Sessions props={discipline.session} /> */}
-
-
                 <Col md="12" sm="12" className="ml-3">
                   <Row className="align-items-center">
                     <Button
@@ -467,7 +434,6 @@ export default function NewDiscipline() {
                   </Row>
                 </Col>
               </Row>
-
               <Col className="mt-6">
                 <Button type="submit" color="default" block>{ load }</Button>
               </Col>

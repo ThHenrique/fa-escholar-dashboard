@@ -2,7 +2,7 @@
   "parser": "babel-eslint",
   "env": {
       "browser": true,
-      "es7": true
+      "es2017": true
   },
   "plugins": ["react", "jsx-a11y", "import", "react-hooks"],
   "extends": [

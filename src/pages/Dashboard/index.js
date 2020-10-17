@@ -56,9 +56,9 @@ class Dashboard extends React.Component {
                   <Row className="align-items-center">
                     <div className="col">
                       <h6 className="text-light text-uppercase ls-1 mb-1">
-                        Overview
+                        Visão geral
                       </h6>
-                      <h5 className="h3 text-white mb-0">Sales value</h5>
+                      <h5 className="h3 text-white mb-0">Valor de venda</h5>
                     </div>
                     <div className="col">
                       <Nav className="justify-content-end" pills>
@@ -70,7 +70,7 @@ class Dashboard extends React.Component {
                             href="#pablo"
                             onClick={e => this.toggleNavs(e, 1)}
                           >
-                            <span className="d-none d-md-block">Month</span>
+                            <span className="d-none d-md-block">Mês</span>
                             <span className="d-md-none">M</span>
                           </NavLink>
                         </NavItem>
@@ -83,8 +83,8 @@ class Dashboard extends React.Component {
                             href="#pablo"
                             onClick={e => this.toggleNavs(e, 2)}
                           >
-                            <span className="d-none d-md-block">Week</span>
-                            <span className="d-md-none">W</span>
+                            <span className="d-none d-md-block">Semana</span>
+                            <span className="d-md-none">S</span>
                           </NavLink>
                         </NavItem>
                       </Nav>
@@ -109,9 +109,9 @@ class Dashboard extends React.Component {
                   <Row className="align-items-center">
                     <div className="col">
                       <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Performance
+                        Vendas
                       </h6>
-                      <h5 className="h3 mb-0">Total orders</h5>
+                      <h5 className="h3 mb-0">Compras Total</h5>
                     </div>
                   </Row>
                 </CardHeader>
@@ -129,12 +129,12 @@ class Dashboard extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col xl="12">
+            <Col xl={12} className="mt-3">
               <Card>
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Page visitssss</h3>
+                      <h3 className="mb-0">Visitas por Disciplina</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -143,7 +143,7 @@ class Dashboard extends React.Component {
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        See all
+                        Ver Tudo
                       </Button>
                     </div>
                   </Row>
@@ -151,15 +151,15 @@ class Dashboard extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Page name</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col">Unique users</th>
-                      <th scope="col">Bounce rate</th>
+                      <th scope="col">Disciplina</th>
+                      <th scope="col">Visitas</th>
+                      <th scope="col">Usuários únicos</th>
+                      <th scope="col">Taxa de rejeição</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">/argon/</th>
+                      <th scope="row">/Homepage/</th>
                       <td>4,569</td>
                       <td>340</td>
                       <td>
@@ -168,7 +168,7 @@ class Dashboard extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/index.html</th>
+                      <th scope="row">/Discipline/portuguese/pontuacao</th>
                       <td>3,985</td>
                       <td>319</td>
                       <td>
@@ -177,7 +177,7 @@ class Dashboard extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/charts.html</th>
+                      <th scope="row">/Discipline/portuguese</th>
                       <td>3,513</td>
                       <td>294</td>
                       <td>
@@ -186,7 +186,7 @@ class Dashboard extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/tables.html</th>
+                      <th scope="row">/Discipline/english</th>
                       <td>2,050</td>
                       <td>147</td>
                       <td>
@@ -195,7 +195,7 @@ class Dashboard extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/profile.html</th>
+                      <th scope="row">/Discipline/hardware</th>
                       <td>1,795</td>
                       <td>190</td>
                       <td>
@@ -206,7 +206,7 @@ class Dashboard extends React.Component {
                   </tbody>
                 </Table>
               </Card>
-            </Col>            
+            </Col>
           </Row>
         </Container>
       </>

@@ -19,8 +19,8 @@ import AdminNavbar from './components/AdminNavbar';
 import Sidebar from './components/Sidebar';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route 
-    { ...rest } 
+  <Route
+    { ...rest }
     render={ props => (
       //isAuthenticated() ? (
         <>
@@ -28,7 +28,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           <div
             className="main-content"
           >
-            <AdminNavbar/>  
+            <AdminNavbar/>
             <Component { ...props } />
 
           </div>
@@ -37,7 +37,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       //) : (
        // <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
       )
-    } 
+    }
   />
 )
 
@@ -53,11 +53,11 @@ export default function Routes() {
         <PrivateRoute exact path="/admins/:id" component={EditAdmin} />
 
         <PrivateRoute exact path="/discipline" component={Discipline} />
-        <PrivateRoute exact path="/discipline/new" component={NewDiscipline} />        
-        <PrivateRoute exact path="/discipline/:id" component={ViewDiscipline} /> 
-        
+        <PrivateRoute exact path="/discipline/new" component={NewDiscipline} />
+        <PrivateRoute exact path="/discipline/:id" component={ViewDiscipline} />
+
         <PrivateRoute exact path="/profiles" component={Profile} />
-        <PrivateRoute exact path="/profiles/:id" component={ViewProfile} />      
+        <PrivateRoute exact path="/profiles/:id" component={ViewProfile} />
 
         <Route path="*" component={() => <h1>Page not found</h1>} />
       </Switch>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import classnames from "classnames";
 import PropTypes from "prop-types";
@@ -38,7 +38,7 @@ export default function AdminNavbar() {
 
     history.push('/login');
   }
-  
+
   const openSearch = () => {
     document.body.classList.add("g-navbar-search-showing");
     setTimeout(function() {
@@ -190,76 +190,58 @@ export default function AdminNavbar() {
                 >
                   <Row className="shortcuts px-4">
                     <Col
-                      className="shortcut-item"
+                      className="shortcut-item "
                       href="#pablo"
                       onClick={e => e.preventDefault()}
-                      xs="4"
+                      xs="6"
                       tag="a"
                     >
-                      <span className="shortcut-media avatar rounded-circle bg-gradient-red">
-                        <i className="ni ni-calendar-grid-58" />
-                      </span>
-                      <small>Calendar</small>
+                      <Link to="/">
+                        <span className="shortcut-media avatar rounded-circle bg-gradient-yellow">
+                          <i className="ni ni-chart-pie-35" />
+                        </span>
+                        <small>Dashboard</small>
+                      </Link>
                     </Col>
                     <Col
-                      className="shortcut-item"
+                      className="shortcut-item "
                       href="#pablo"
                       onClick={e => e.preventDefault()}
-                      xs="4"
+                      xs="6"
                       tag="a"
                     >
-                      <span className="shortcut-media avatar rounded-circle bg-gradient-orange">
-                        <i className="ni ni-email-83" />
-                      </span>
-                      <small>Email</small>
+                      <Link to="/discipline">
+                        <span className="shortcut-media avatar rounded-circle bg-gradient-info">
+                          <i className="ni ni-book-bookmark" />
+                        </span>
+                        <small>Disciplinas</small>
+                      </Link>
                     </Col>
                     <Col
-                      className="shortcut-item"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      xs="4"
+                      className="shortcut-item "
+                      xs="6"
                       tag="a"
                     >
-                      <span className="shortcut-media avatar rounded-circle bg-gradient-info">
-                        <i className="ni ni-credit-card" />
-                      </span>
-                      <small>Payments</small>
+                      <Link to="/profiles">
+                        <span className="shortcut-media avatar rounded-circle bg-gradient-green">
+                          <i className="ni ni-circle-08" />
+                        </span>
+                        <small>Acessar Perfil</small>
+                      </Link>
                     </Col>
                     <Col
-                      className="shortcut-item"
+                      className="shortcut-item "
                       href="#pablo"
                       onClick={e => e.preventDefault()}
-                      xs="4"
+                      xs="6"
                       tag="a"
                     >
-                      <span className="shortcut-media avatar rounded-circle bg-gradient-green">
-                        <i className="ni ni-books" />
-                      </span>
-                      <small>Reports</small>
-                    </Col>
-                    <Col
-                      className="shortcut-item"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      xs="4"
-                      tag="a"
-                    >
-                      <span className="shortcut-media avatar rounded-circle bg-gradient-purple">
-                        <i className="ni ni-pin-3" />
-                      </span>
-                      <small>Maps</small>
-                    </Col>
-                    <Col
-                      className="shortcut-item"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      xs="4"
-                      tag="a"
-                    >
-                      <span className="shortcut-media avatar rounded-circle bg-gradient-yellow">
-                        <i className="ni ni-basket" />
-                      </span>
-                      <small>Shop</small>
+                      <Link to="/admins">
+                        <span className="shortcut-media avatar rounded-circle bg-gradient-purple">
+                          <i className="ni ni-fat-add" />
+                        </span>
+                        <small>Administradores</small>
+                      </Link>
                     </Col>
                   </Row>
                 </DropdownMenu>
@@ -274,7 +256,7 @@ export default function AdminNavbar() {
                         alt="..."
                         src={require("../assets/img/theme/team-1.jpg")}
                       />
-                    </span> 
+                    </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
                         { localStorage.getItem('name') }
@@ -291,8 +273,8 @@ export default function AdminNavbar() {
                   >
                     <i className="ni ni-single-02" />
                     <span>Meu perfil</span>
-                  </DropdownItem>                 
-               
+                  </DropdownItem>
+
                   <DropdownItem divider />
                   <DropdownItem
                     href="#"
