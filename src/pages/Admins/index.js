@@ -31,35 +31,30 @@ export default function Admins() {
 
   const token = localStorage.getItem("token");
 
-  const allowedState = [
-    { id: 1, name: "Alabama", email: 'Doctor' , level: 'Alto', creat_at: '08/11/2001' },
-    { id: 2, name: "Georgia", email: 'Doctor' , level: 'Alto', creat_at: '08/11/2001' },
-    { id: 3, name: "Tennessee", email: 'Doctor' , level: 'Alto', creat_at: '08/11/2001'}
-  ];
-
   useEffect(() => {
-    setUsers(allowedState)
-    // api
-    //   .get("admin/users", {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     setUsers(response.data);
-    //   });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    (async () => {
+      try {
+        const response = await api.get("admin/index", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setUsers(response.data);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    })();
   }, []);
 
-  const levelFormatter = (cell, row) => (
+  const levelFormatter = (cell) => (
     <>
-      <Badge className="badge-dot mr-4" color="">
-        <i className="bg-warning" />
-        <span className="status ">Alto</span>
-      </Badge>        
+      <Badge color={cell == 'admin' ? 'danger' : cell == 'manager' ? 'success' : 'primary'}>
+        {cell}
+      </Badge>
     </>
   );
-  
+
 
   const actionsFormatter = (cell, row) => (
     <>
@@ -84,7 +79,7 @@ export default function Admins() {
 
   async function handleDeleteUser(id) {
     try {
-      await api.delete(`admin/users/${id}`, {
+      await api.delete(`admin/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -149,7 +144,7 @@ export default function Admins() {
           <CardBody>
             <ToolkitProvider
               data={users}
-              keyField="name"
+              keyField="id"
               columns={[
                 {
                   dataField: "id",
@@ -163,19 +158,14 @@ export default function Admins() {
                   sort: true,
                 },
                 {
-                  dataField: "email",
-                  text: "Email",
-                  sort: true,
-                },
-                {
-                  dataField: "creat_at",
-                  text: "Data",
-                  sort: true,
-                },
-                {
-                  dataField: "level",
+                  dataField: "role",
                   text: "Nível de acesso",
-                  formatter: levelFormatter,                  
+                  formatter: levelFormatter,
+                  sort: true,
+                },
+                {
+                  dataField: "created_at",
+                  text: "Criado em",
                   sort: true,
                 },
                 {
@@ -198,7 +188,7 @@ export default function Admins() {
                     <label>
                       Pesquisar:
                       <SearchBar
-                        className="form-control-sm"
+                        className="form-control-sm ml-2"
                         placeholder="Pesquisar"
                         {...props.searchProps}
                       />
@@ -214,7 +204,7 @@ export default function Admins() {
               )}
             </ToolkitProvider>
           </CardBody>
-        </Card>                
+        </Card>
       </Container>
     </>
   );

@@ -22,10 +22,9 @@ import PageHeader from "../../components/PageHeader";
 
 export default function NewAdmin() {
   const [name, setName] = useState('');
-  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [load, setLoad] = useState('Salvar');
+  const [load, setLoad] = useState('Cadastrar');
 
   const inputRef = useRef('notificationAlert');
 
@@ -40,13 +39,13 @@ export default function NewAdmin() {
 
     const data = {
       name,
-      last_name,
       email,
-      password
+      password,
+      role: "manager",
     }
 
     try {
-      await api.post('admin/users', data, {
+      await api.post('adminAuth/signUp', data, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -54,11 +53,11 @@ export default function NewAdmin() {
 
       notify('fas fa-check', 'success', 'Sucesso!', 'Administrador cadastrado');
 
-      setTimeout(function(){ 
+      setTimeout(function(){
         history.push('/admins');
       }, 3000);
     } catch (err) {
-      console.error(err);
+      console.log(err);
 
       notify('fas fa-times', 'danger', 'Erro!', 'Ocorreu um erro ao realizar o cadastro.');
 
@@ -98,33 +97,18 @@ export default function NewAdmin() {
         <Card className="card-frame">
           <CardBody>
             <Form onSubmit={handleNewAdmin}>
+              <FormGroup>
+                <label htmlFor="name">Nome</label>
+                <Input
+                  id="name"
+                  placeholder="Nome"
+                  type="text"
+                  onChange={e => setName(e.target.value)}
+                  value={name}
+                  required
+                />
+              </FormGroup>
               <Row>
-                <Col md="6" sm="12">
-                  <FormGroup>
-                    <label htmlFor="name">Nome</label>
-                    <Input
-                      id="name"
-                      placeholder="Nome"
-                      type="text"
-                      onChange={e => setName(e.target.value)}
-                      value={name}
-                      required
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md="6" sm="12">
-                  <FormGroup>
-                    <label htmlFor="last_name">Sobrenome</label>
-                    <Input
-                      id="last_name"
-                      placeholder="Sobrenome"
-                      type="text"
-                      onChange={e => setLastName(e.target.value)}
-                      value={last_name}
-                      required
-                    />
-                  </FormGroup>
-                </Col>
                 <Col md="6" sm="12">
                   <FormGroup>
                     <label htmlFor="email">Email</label>
@@ -135,150 +119,26 @@ export default function NewAdmin() {
                       onChange={e => setEmail(e.target.value)}
                       value={email}
                       required
-                    />
+                      />
                   </FormGroup>
                 </Col>
                 <Col md="6" sm="12">
                   <FormGroup>
-                    <label htmlFor="password">CPF</label>
+                    <label htmlFor="password">Senha</label>
                     <Input
-                      id="cpf"
-                      placeholder="000.000.000-00"
-                      type="text"
+                      id="password"
+                      type="password"
+                      placeholder="Senha"
                       onChange={e => setPassword(e.target.value)}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md="6" sm="12">
-                  <FormGroup>
-                    <label htmlFor="email">Data de Nascimento</label>
-                    <Input
-                      id="birthday"
-                      placeholder="08/11/2001"
-                      type="text"
-                      onChange={e => setEmail(e.target.value)}
-                      value={email}
+                      value={password}
                       required
-                    />
+                      />
                   </FormGroup>
                 </Col>
-                <Col md="6" sm="12">
-                  <FormGroup>
-                    <label htmlFor="password">Celular / WhatApp</label>
-                    <Input
-                      id="cellphone"
-                      placeholder="(00) 9 9152-2542"
-                      type="text"
-                      onChange={e => setPassword(e.target.value)}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md="6" sm="12">
-                  <Row>               
-                    <Col md="6" sm="12">               
-                      <FormGroup>
-                        <label htmlFor="email">CEP</label>
-                        <Input
-                          id="zip_code"
-                          placeholder="00000-027"
-                          type="text"
-                          onChange={e => setEmail(e.target.value)}
-                          value={email}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md="6" sm="12">
-                      <FormGroup>
-                        <label htmlFor="email">Endereço</label>
-                        <Input
-                          id="address"
-                          placeholder="R. Morumbi"
-                          type="text"
-                          onChange={e => setEmail(e.target.value)}
-                          value={email}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>                             
-                  </Row>
-                </Col>
-                
-                <Col md="6" sm="12">
-                  <Row>               
-                    <Col md="6" sm="12">               
-                      <FormGroup>
-                        <label htmlFor="email">Número</label>
-                        <Input
-                          id="number"
-                          placeholder="Número"
-                          type="text"
-                          onChange={e => setEmail(e.target.value)}
-                          value={email}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md="6" sm="12">
-                      <FormGroup>
-                        <label htmlFor="email">Complemento</label>
-                        <Input
-                          id="complement"
-                          placeholder="Atrás da árvore"
-                          type="text"
-                          onChange={e => setEmail(e.target.value)}
-                          value={email}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>                             
-                  </Row>
-                </Col>
-                <Col md="6" sm="12">
-                  <FormGroup>
-                    <label htmlFor="password">Cidade</label>
-                    <Input
-                      id="city"
-                      placeholder="Sanja City"
-                      type="text"
-                      onChange={e => setPassword(e.target.value)}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md="6" sm="12">
-                  <Row>               
-                    <Col md="6" sm="12">               
-                      <FormGroup>
-                        <label htmlFor="email">Bairro</label>
-                        <Input
-                          id="neighborhood"
-                          placeholder="Residencial das residencia"
-                          type="text"
-                          onChange={e => setEmail(e.target.value)}
-                          value={email}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md="6" sm="12">
-                      <FormGroup>
-                        <label htmlFor="email">UF</label>
-                        <Input
-                          id="state"
-                          placeholder="SP"
-                          type="text"
-                          onChange={e => setEmail(e.target.value)}
-                          value={email}
-                          required
-                        />
-                      </FormGroup>
-                    </Col>                             
-                  </Row>
-                </Col>
-                <Col className="mt-6">
-                  <Button type="submit" color="default" block>{ load }</Button>
-                </Col>
-              </Row>  
+              </Row>
+              <Col className="mt-6 d-flex justify-content-center">
+                <Button type="submit" color="default">{ load }</Button>
+              </Col>
             </Form>
           </CardBody>
         </Card>

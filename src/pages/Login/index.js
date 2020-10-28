@@ -46,90 +46,82 @@ export default function Login() {
   const history = useHistory();
   const authenticated = isAuthenticated();
 
-  // useEffect(() => {
-  //   if ( authenticated ) {
-  //     history.push('/');
-  //   }
+  useEffect(() => {
+    if ( authenticated ) {
+      history.push('/');
+    }
 
-  //   const rememberActive = localStorage.getItem('remember') ? true : false;
+    const rememberActive = localStorage.getItem('remember') ? true : false;
 
-  //   if(rememberActive) {
-  //     setEmail(localStorage.getItem('email'));
-  //   }
+    if(rememberActive) {
+      setEmail(localStorage.getItem('email'));
+    }
+    setRemember(rememberActive);
+  }, [authenticated]);
 
-  //   setRemember(rememberActive);
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [authenticated]);
-
-  // async function handleCheckbox() {
-  //   setRemember(!remember);
-  // }
+  async function handleCheckbox() {
+    setRemember(!remember);
+  }
 
   async function handleLogin(e) {
     e.preventDefault();
-
     setLoad(<Spinner color="#FFF" />);
-    
+
     const data = {
       email,
       password
     }
 
-    // try {
-    //   const response = await api.post('admin', data);
+    try {
+      const response = await api.post('adminAuth/signIn', data);
+      const { token } = response.data;
 
-    //   const { admin, token } = response.data;
-
-    //   if(remember) {
-    //     localStorage.setItem('email', email);
-    //     localStorage.setItem('remember', remember);
-    //   } else {
-    //     localStorage.removeItem('email');
-    //     localStorage.removeItem('remember');
-    //   }
-
-    //   localStorage.setItem('token', token.token);
-    //   localStorage.setItem('name', admin.name);
-    //   localStorage.setItem('id', admin.id);
+      if(remember) {
+        localStorage.setItem('email', email);
+        localStorage.setItem('remember', remember);
+      } else {
+        localStorage.removeItem('email');
+        localStorage.removeItem('remember');
+      }
+      localStorage.setItem('token', token);
 
       history.push('/');
-    // } catch (err) {
-    //   const status = get(err, 'response.status');
+    } catch (err) {
+      console.log(err);
+      const status = get(err, 'response.status');
 
-    //   if (status === 400) {
-    //     const { field, message } = get(err, 'response.data.0');
+      if (status === 400) {
+        const { field, message } = get(err, 'response.data.0');
 
-    //     if (field === 'email') {
-    //       setFocusedEmail(true)
-    //       setValidationEmail(message);
-    //       setValidationPassword('');
-    //       setValidationForm('');
-    //     } else if (field === 'password') {
-    //       setFocusedPassword(true)
-    //       setValidationPassword(message);
-    //       setValidationEmail('');
-    //       setValidationForm('');
-    //     }
-    //   } else if (status === 401) {
-    //     setValidationEmail('');
-    //     setValidationPassword('');
+        if (field === 'email') {
+          setFocusedEmail(true)
+          setValidationEmail(message);
+          setValidationPassword('');
+          setValidationForm('');
+        } else if (field === 'password') {
+          setFocusedPassword(true)
+          setValidationPassword(message);
+          setValidationEmail('');
+          setValidationForm('');
+        }
+      } else if (status === 401) {
+        setValidationEmail('');
+        setValidationPassword('');
 
-    //     setValidationForm('Email ou senha incorretos, tente novamente.');
-    //   }
+        setValidationForm('Email ou senha incorretos, tente novamente.');
+      }
 
       setLoad('ENTRAR');
-    // }
+    }
   }
   return (
     <>
       <Container>
         <Row className="justify-content-center mt-7 mb-5">
-          <Col lg="5" md="7">
-            <img
-              className="img-fluid"
-              src={logoImg}
-              alt="CarJoe Logo"
-            />
+          <Col lg="5" md="7" className="text-center text-default">
+            <h2>
+              E-SCHOLAR
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -146,9 +138,7 @@ export default function Login() {
                     {validationForm}
                   </Alert>
                 ) : ('') }
-                {/* <Form role="form" onSubmit={handleLogin}> */}
-                <Form role="form" onSubmit={() => {}}>
-
+                <Form role="form" onSubmit={handleLogin}>
                   <FormGroup
                     className={classnames("mb-3", {
                       focused: focusedEmail
@@ -182,7 +172,7 @@ export default function Login() {
                       <FormFeedback>{validationEmail}</FormFeedback>
                     </InputGroup>
                   </FormGroup>
-                  <FormGroup 
+                  <FormGroup
                     className={classnames({
                       focused: focusedPassword
                     })}
@@ -221,9 +211,7 @@ export default function Login() {
                       id=" customCheckLogin"
                       type="checkbox"
                       checked={remember}
-                      // onClick={handleCheckbox}
-                      onClick={() => {}}
-
+                      onClick={handleCheckbox}
                     />
                     <label
                       className="custom-control-label"
@@ -240,7 +228,7 @@ export default function Login() {
                 </Form>
               </CardBody>
             </Card>
-            <Row>
+            {/* <Row>
               <Col xs="6">
                 <Link
                   className="text-gray"
@@ -250,7 +238,7 @@ export default function Login() {
                   <small>Esqueceu a senha?</small>
                 </Link>
               </Col>
-            </Row>
+            </Row> */}
           </Col>
         </Row>
       </Container>

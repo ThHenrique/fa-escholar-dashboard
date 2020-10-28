@@ -22,7 +22,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     { ...rest }
     render={ props => (
-      //isAuthenticated() ? (
+      isAuthenticated() ? (
         <>
           <Sidebar sidenavOpen={false} toggleSidenav={false} {...props}/>
           <div
@@ -34,10 +34,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
           </div>
 
         </>
-      //) : (
-       // <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+      ) : (
+       <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
       )
-    }
+    )}
   />
 )
 
