@@ -10,7 +10,6 @@ import {
   CardBody,
   Container,
   Col,
-  Row,
 } from "reactstrap";
 
 import NotificationAlert from "react-notification-alert";
@@ -23,7 +22,6 @@ import PageHeader from "../../components/PageHeader";
 
 export default function EditAdmin({ match }) {
   const [name, setName] = useState('');
-  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [load, setLoad] = useState('Editar');

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import {useHistory} from "react-router-dom";
 
 import {
   Form,
@@ -6,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
+  InputGroupText,
   Button,
   Card,
   CardBody,
@@ -17,362 +19,102 @@ import {
   DropdownMenu,
   DropdownToggle,
   CardImg,
+  Modal
 } from "reactstrap";
 
-// import { useHistory } from "react-router-dom";
 import NotificationAlert from "react-notification-alert";
 import { Spinner } from "react-activity";
 import "../../assets/css/react-activity.css";
 // import Carousel from "react-multi-carousel";
-// import api from "../../services/api";
+import api from "../../services/api";
 import PageHeader from "../../components/PageHeader";
+import SessionModal from "../../components/Utils/SessionModal";
 
 import "react-multi-carousel/lib/styles.css";
 
 export default function NewDiscipline() {
-  const [load, setLoad] = useState("Salvar");
-  const [cont, setCont] = useState(0);
-  const [contAula, setContAula] = useState(0);
+  const [load, setLoad] = useState("Criar Disciplina");
   const [images, setImages] = useState([]);
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [objectives, setObjectives] = useState('')
+  const [price, setPrice] = useState('')
+  const [about, setAbout] = useState('')
   const inputRef = useRef("notificationAlert");
+  const [sessionModal, setSessionModal] = useState(true);
 
-
-  const [lesson, setLesson] = useState([{
-    name: "",
-    description: ""
-  }]);
-
-  const [session, setSession] = useState([{
-    name: "",
-    lesson
-  }]);
-
-  const [discipline, setDiscipline] = useState({
-    name: "",
-    description: "",
-    session,
-  });
-  // const history = useHistory();
-  // const token = localStorage.getItem("token");
-
-  const updateField = (e) => {
-    const { id, value } = e.target;
-    setDiscipline(prevState => ({
-      ...prevState,
-      [id]: value
-    }))
-  };
-
-  useEffect(() => {
-    let array = 1
-
-
-    // console.log(discipline);
-    // console.log(session);
-    // console.log(lesson);
-
-  }, [discipline, session, lesson]);
-
-  useEffect(() => {
-    // setSection(cont)
-    // setSection(section.push(cont))
-  }, [cont]);
-
-  const addSection = () => {
-    setDiscipline(prevState => ({
-      ...prevState,
-      session: [...prevState.section, {
-        name: 'aaaaaa'
-      }]
-    }))
-  };
+  const history = useHistory();
+  const token = localStorage.getItem("token");
 
   async function handleNewDiscipline(e) {
     e.preventDefault();
 
     setLoad(<Spinner color="#FFF" />);
 
-    // notify("fas fa-check", "success", "Sucesso!", "Administrador cadastrado");
+    const data = {
+      name,
+      description,
+      about,
+      price,
+      objectives
+    }
+    try {
+      const response = await api.post('discipline/create', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+      if (response.status == 200) {
+        notify("fas fa-check", "success", "Sucesso!", "Administrador cadastrado");
+        setSessionModal(true)
+      }
 
-    // notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao realizar o cadastro.");
-
+    } catch (error) {
+      notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao realizar o cadastro.");
+    }
     setLoad("Salvar");
   }
 
-  // const notify = (icon, type, title, message) => {
-  //   const options = {
-  //     place: "tr",
-  //     message: (
-  //       <div className="alert-text">
-  //         <span className="alert-title" data-notify="title">
-  //           {" "}
-  //           {title}
-  //         </span>
-  //         <span data-notify="message">
-  //           {message}
-  //         </span>
-  //       </div>
-  //     ),
-  //     type,
-  //     icon,
-  //     autoDismiss: 2,
-  //   };
-  //   inputRef.current.notificationAlert(options);
-  // };
+  const notify = (icon, type, title, message) => {
+    const options = {
+      place: "tr",
+      message: (
+        <div className="alert-text">
+          <span className="alert-title" data-notify="title">
+            {" "}
+            {title}
+          </span>
+          <span data-notify="message">
+            {message}
+          </span>
+        </div>
+      ),
+      type,
+      icon,
+      autoDismiss: 2,
+    };
+    inputRef.current.notificationAlert(options);
+  };
 
-  async function handleImage(event) {
-    // console.log(event);
-    const { target } = event;
 
-    console.log(event.target.files[0].size);
-    console.log(event.target.files[0]);
-
-    if (images.length >= 10 && target.value.length > 0) {
-      return alert("Número máximo de fotos Atingido(10/10)");
-    }
-
-    if (target.value.length > 0 && event.target.files[0].size <= 5000000) {
-      setImages([...images, event.target.files[0]]);
-    } else {
-      event.target.value = null;
-    }
-  }
-
-  async function removeImage(index) {
-    if (images.length === 1) {
-      return setImages([]);
-    }
-
-    const pivot = images.filter((item, iterableIndex) => index !== iterableIndex);
-    return setImages(pivot);
-  }
-
-  // const responsive = {
-  //   desktop: {
-  //     breakpoint: { max: 3000, min: 1024 },
-  //     items: 5,
-  //     slidesToSlide: 1, // optional, default to 1.
-  //   },
-  //   tablet: {
-  //     breakpoint: { max: 1024, min: 464 },
-  //     items: 2,
-  //     slidesToSlide: 1, // optional, default to 1.
-  //   },
-  //   mobile: {
-  //     breakpoint: { max: 464, min: 0 },
-  //     items: 1,
-  //     slidesToSlide: 1, // optional, default to 1.
-  //   },
-  // };
 
   const Sessions = (props) => {
     return (
       <Col md="12" sm="12">
-      <FormGroup>
-        <h3>
-          Sessão{" "}
-          {props.index}
-        </h3>
-        <InputGroup>
-          <Input
-            id="sessionName"
-            onChange={updateField}
-            value={discipline.session.name}
-            placeholder="Digite o nome da seção..."
-            type="text"
-            name="description"
-            required
-          />
-          <InputGroupAddon addonType="append">
-            <Button
-              color="primary"
-              outline
-              type="button"
-              onClick={e => {
-                setLesson([
-                  ...lesson,
-                  {name: ""}
-                ])
-              }}
-            >
-              Adicionar aula
-            </Button>
-            <Button
-              className="btn btn-icon btn-danger btn2"
-              onClick={(e) => {
-                const pivot = session.filter((item, iterableIndex) => props.index !== iterableIndex);
-                setSession(pivot);
-              }}
-            >
-              <span className="btn-inner--icon">
-                <i className="fas fa-trash" />
-              </span>
-            </Button>
-          </InputGroupAddon>
-        </InputGroup>
-      </FormGroup>
-      {lesson.map((item, index) => (
-        <Lesson index={index}/>
-      ))}
+        <Button
+          className="btn btn-icon btn-danger btn2"
+          // onClick={(e) => {
+          //   const pivot = session.lesson.filter((item, iterableIndex) => props.index !== iterableIndex);
+          //   setSession(pivot);
+          // }}
+        >
+          <span className="btn-inner--icon">
+            <i className="fas fa-trash" />
+          </span>
+        </Button>
       </Col>
     );
   };
-
-  const Session = (props) => {
-    const sessionComponent = props.session.lesson.map(lesson => (
-      <Lesson key={lesson.id} lesson={lesson} />
-    ))
-    return (
-      <Col md={12} sm={12}>
-        <h3>Olá</h3>
-        {sessionComponent}
-      </Col>
-    )
-  }
-
-  const Lesson = (props) => {
-    return (
-      <>
-        <Col md="12" sm="12">
-          <FormGroup>
-            <h3>Aula</h3>
-            <InputGroup>
-              <Input
-                id="nameLession"
-                value={lesson.name}
-                //onChange={e => setLessonName(e.target.value)}
-                placeholder="Digite o nome da Aula..."
-                type="text"
-              />
-              <InputGroupAddon addonType="append">
-                <UncontrolledDropdown  group>
-                  <DropdownToggle
-                    color="primary"
-                    outline
-                    style={{borderRadius: 0}}
-                    className="btn2"
-                  >
-                    Adicionar Conteúdo
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem
-                      onClick={e => e.preventDefault()}
-                    >
-                      <i className="ni ni-single-copy-04" />
-                      <span>Documento</span>
-                    </DropdownItem>
-                    <DropdownItem>
-                      <Button
-                        className="button1"
-                        color="#1B4263"
-                        type="button"
-                        tag="label"
-                      >
-                      <i className="ni ni-button-play" />
-                      <span>Vídeo / Aúdio / Imagens </span>
-                      <input
-                        style={{ display: "none" }}
-                        type="file"
-                        accept="image/*"
-                        inputProps={{ accept: "image/*" }}
-                        multiple
-                        name="image[]"
-                        onChange={(event) => handleImage(event)}
-                        />
-                      </Button>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-                <Button
-                  className="btn btn-icon btn-danger btn2"
-                  onClick={() => {
-                    const pivot = lesson.filter((item, iterableIndex) => props.index !== iterableIndex);
-                    setLesson(pivot);
-                  }}
-                >
-                  <span className="btn-inner--icon">
-                    <i class="fas fa-trash" />
-                  </span>
-                </Button>
-              </InputGroupAddon>
-            </InputGroup>
-            <InputGroup className="mt-3">
-              <Input
-                placeholder="Descrição e/ou comentários da aula..."
-                value={lesson.description}
-                type="textarea"
-              />
-            </InputGroup>
-            <Col>
-              <Button
-                className="button1"
-                color="#1B4263"
-                type="button"
-                tag="label"
-              >
-                Adicionar Foto ({images.length}/10)
-                <input
-                  style={{ display: "none" }}
-                  type="file"
-                  accept="image/*"
-                  inputProps={{ accept: "image/*" }}
-                  multiple
-                  name="image[]"
-                  onChange={(event) => handleImage(event)}
-                />
-              </Button>
-            </Col>
-          </FormGroup>
-        </Col>
-        <Row>
-          {images.map((file, index) => (
-            <Images file={file} index={index}/>
-          ))}
-        </Row>
-      </>
-    )
-  }
-
-  const Images = (props) => {
-    return (
-      <>
-        <Card
-          style={{ width: "100%" }}
-          style={{ marginLeft: 2, marginTop: 15 }}
-        >
-          <CardImg
-            key={props.file}
-            id="background"
-            className={props.images ? "has-background" : ""}
-            style={{
-              backgroundImage: `url(${URL.createObjectURL(props.file)})`,
-              minHeight: 180,
-              width: "100%",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
-          <CardBody className="text-center">
-            <Button
-              onClick={() => removeImage(props.index)}
-              className="btn btn-danger"
-            >
-              Remover
-            </Button>
-          </CardBody>
-        </Card>
-        <div
-          style={{
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-          }}>
-          {props.file.name}
-        </div>
-      </>
-    );
-  }
-
 
   return (
     <>
@@ -392,8 +134,8 @@ export default function NewDiscipline() {
                       id="name"
                       placeholder="Digite o nome da disciplina..."
                       type="text"
-                      onChange={updateField}
-                      value={discipline.name}
+                      onChange={e => setName(e.target.value)}
+                      value={name}
                       required
                     />
                   </FormGroup>
@@ -406,16 +148,60 @@ export default function NewDiscipline() {
                       placeholder="Adicione uma descrição"
                       type="text"
                       className="form-control-lg"
-                      onChange={updateField}
-                      value={discipline.description}
+                      onChange={e => setDescription(e.target.value)}
+                      value={description}
                       required
                     />
                   </FormGroup>
                 </Col>
-                {session.map((item, index) => (
-                  <Sessions index={index}/>
-                ))}
-                <Col md="12" sm="12" className="ml-3">
+                <Col md="12" sm="12">
+                  <FormGroup>
+                    <h3>Sobre</h3>
+                    <Input
+                      id="about"
+                      type="text"
+                      placeholder="Fale um pouco sobre essa disciplina"
+                      onChange={e => setAbout(e.target.value)}
+                      value={about}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md="12" sm="12">
+                  <FormGroup>
+                    <h3>Objetivos</h3>
+                    <Input
+                      id="objectives"
+                      type="text"
+                      placeholder="Informe os objetivos..."
+                      onChange={e => setObjectives(e.target.value)}
+                      value={objectives}
+                      required
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md={2} sm={12}>
+                  <FormGroup>
+                    <h3>Valor</h3>
+                    <InputGroup>
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>R$</InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        id="price"
+                        placeholder="00,00"
+                        type="text"
+                        onChange={e => setPrice(e.target.value)}
+                        value={price}
+                        required
+                      />
+                    </InputGroup>
+                  </FormGroup>
+                </Col>
+                {/* {session.map((item, index) => (
+                  <Sessions key={index} index={index}/>
+                ))} */}
+                {/* <Col md="12" sm="12" className="ml-3">
                   <Row className="align-items-center">
                     <Button
                       className="btn btn-icon-only"
@@ -424,7 +210,7 @@ export default function NewDiscipline() {
                       onClick={e => {
                         setSession([
                           ...session,
-                          {name: ""}
+                          session
                         ])
                       }}
                     >
@@ -432,7 +218,7 @@ export default function NewDiscipline() {
                     </Button>
                     <h3>Adicionar seção</h3>
                   </Row>
-                </Col>
+                </Col> */}
               </Row>
               <Col className="mt-6">
                 <Button type="submit" color="default" block>{ load }</Button>
@@ -441,6 +227,26 @@ export default function NewDiscipline() {
           </CardBody>
         </Card>
       </Container>
+      <Modal
+        className="modal-dialog-centered"
+        size="lg"
+        isOpen={sessionModal}
+        // toggle={() => handleLogin()}
+      >
+        <div className="modal-header">
+          <span style={{ fontSize: 18, fontWeight: "bold" }}>Criar Seção</span>
+          <button
+            aria-label="Close"
+            className="close"
+            data-dismiss="modal"
+            type="button"
+            onClick={() => setSessionModal(false)}
+          >
+            <span aria-hidden>×</span>
+          </button>
+        </div>
+        <SessionModal />
+      </Modal>
     </>
   );
 }

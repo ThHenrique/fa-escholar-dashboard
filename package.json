@@ -15,7 +15,7 @@
     "argon-dashboard-react"
   ],
   "author": "Creative Tim",
-  "license": "MIT", 
+  "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -40,6 +40,7 @@
     "axios": "^0.20.0",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
+    "immer": "^7.0.14",
     "moment": "2.24.0",
     "node-sass": "4.13.1",
     "nouislider": "14.1.1",
@@ -58,7 +59,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.3",
-    "reactstrap": "8.4.1"
+    "reactstrap": "8.4.1",
+    "shortid": "^2.2.16"
   },
   "devDependencies": {
     "@types/googlemaps": "3.39.2",
