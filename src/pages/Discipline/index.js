@@ -30,7 +30,6 @@ export default function Discipline() {
         })
 
         setDisciplines(response.data)
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }

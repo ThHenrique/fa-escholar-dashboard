@@ -1,34 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { produce } from 'immer'
-import {generate} from 'shortid'
-import ReactPlayer from 'react-player'
-import { Spinner, Dots, Windmill } from "react-activity";
+import React, { useState, useEffect, useRef } from "react";
+import {useHistory} from "react-router-dom";
+
 import {
   Container,
-  Button,
+  Row,
+  Col,
   Card,
   CardHeader,
-  FormGroup,
+  CardBody,
+  CardImg,
   Form,
+  FormGroup,
   Input,
   InputGroup,
   InputGroupAddon,
-  Col,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  CardImg,
-  CardBody,
-  Row
+  Button
 } from "reactstrap";
 
-import api from "../../services/api";
-import { get } from "lodash";
-import { getDefaultFormatCodeSettings } from "typescript";
+import ReactPlayer from 'react-player'
+import { Spinner } from "react-activity";
+import NotificationAlert from "react-notification-alert";
 import PageHeader from "../../components/PageHeader";
 
+import { produce } from 'immer'
+import {generate} from 'shortid'
+
+import api from "../../services/api";
+
 export default function Session({ match }) {
+  const disciplineId = match.params.id;
+  const token = localStorage.getItem("token");
+
+  const [load, setLoad] = useState('Salvar');
+
+  const inputRef = useRef("notificationAlert");
+  const history = useHistory();
+
   const [name, setName] = useState("");
   const [lesson, setLesson] = useState([{
     id: generate(),
@@ -36,30 +43,25 @@ export default function Session({ match }) {
     description: '',
     files: null,
   }]);
-  const [load, setLoad] = useState('Salvar');
 
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    console.log(match.state);
-  }, [])
-
-  async function handleLogin(e) {
+  async function handleSession(e) {
     e.preventDefault();
     setLoad(<Spinner color="#FFF" />);
 
-    const data = {}
+    const data = { name, lesson }
 
     try {
-      const response = await api.post(`/sessions`, data, {
+      const response = await api.post(`discipline/create/session/${disciplineId}`, data, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       if (response.data) {
-        setTimeout(() => setLoad('Salvar'), 3000);
+        notify("fas fa-check", "success", "Sucesso!", "Seção cadastrada");
+        setTimeout(() => history.goBack(), 3000);
       }
     } catch (e) {
+      notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao realizar o cadastro.");
       setLoad('Salvar');
     }
   }
@@ -71,6 +73,27 @@ export default function Session({ match }) {
       })
     )
   }
+
+  const notify = (icon, type, title, message) => {
+    const options = {
+      place: "tr",
+      message: (
+        <div className="alert-text">
+          <span className="alert-title" data-notify="title">
+            {" "}
+            {title}
+          </span>
+          <span data-notify="message">
+            {message}
+          </span>
+        </div>
+      ),
+      type,
+      icon,
+      autoDismiss: 2,
+    };
+    inputRef.current.notificationAlert(options);
+  };
 
   const File = (props) => {
     return (
@@ -117,9 +140,12 @@ export default function Session({ match }) {
     <>
       <PageHeader name="Seção" parentName="Disciplinas" parentPath="discipline" />
       <Container className="mt--6" fluid>
+        <div className="rna-wrapper">
+          <NotificationAlert ref={inputRef} />
+        </div>
         <Card className="bg-secondary shadow border-0">
           <CardHeader>
-            <Form role="form">
+            <Form role="form" onSubmit={handleSession}>
               <FormGroup>
                 <h3>
                   Sessão
