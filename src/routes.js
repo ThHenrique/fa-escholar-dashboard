@@ -11,6 +11,10 @@ import EditAdmin from "./pages/Admins/edit"
 import Discipline from './pages/Discipline';
 import ViewDiscipline from './pages/Discipline/view';
 import NewDiscipline from "./pages/Discipline/new"
+import Session from "./pages/Discipline/session"
+import EditSession from "./pages/Discipline/editSession"
+
+
 
 import Profile from './pages/Profile';
 import ViewProfile from './pages/Profile/view';
@@ -55,6 +59,9 @@ export default function Routes() {
         <PrivateRoute exact path="/discipline" component={Discipline} />
         <PrivateRoute exact path="/discipline/new" component={NewDiscipline} />
         <PrivateRoute exact path="/discipline/:id" component={ViewDiscipline} />
+        <PrivateRoute exact path="/discipline/session/:id" component={Session} />
+        <PrivateRoute exact path="/discipline/editSession/:id" component={EditSession} />
+
 
         <PrivateRoute exact path="/profiles" component={Profile} />
         <PrivateRoute exact path="/profiles/:id" component={ViewProfile} />

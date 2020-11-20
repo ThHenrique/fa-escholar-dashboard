@@ -36,8 +36,8 @@ export default function ViewDiscipline({ match }) {
   const [price, setPrice] = useState('')
   const [about, setAbout] = useState('')
 
-  const [images, setImages] = useState([]);
-  const [modal, setModal] = useState(false);
+  const [sessions, setSessions] = useState([]);
+  const [showSessions, setshowSessions] = useState(false);
   const [status_feedback, setFeedback] = useState('');
   const [load, setLoad] = useState("Salvar");
 
@@ -62,6 +62,7 @@ export default function ViewDiscipline({ match }) {
         setObjectives(data.objectives)
         setPrice(data.price)
         setImage(data.image)
+        setSessions(data.session)
       } catch (error) {
         console.log(error);
       }
@@ -153,19 +154,39 @@ export default function ViewDiscipline({ match }) {
                     </InputGroup>
                   </FormGroup>
                 </Col>
-                <Col md="12" sm="12" className="ml-3">
-                  <Row className="align-items-center">
-                    <Button
-                      color="primary"
-                      outline
-                      type="button"
-                      onClick={() => {}}
-                    >
-                      Visualizar Sessões
-                    </Button>
-                  </Row>
-                </Col>
               </Row>
+              <h3>Seções</h3>
+              {sessions.map(item => (
+                <Col md={5} className="mt-1">
+                  <InputGroup>
+                    <Input
+                      value={item.name}
+                      disabled
+                      type="text"
+                    />
+                    <InputGroupAddon addonType="append">
+                      <Button
+                        color="primary"
+                        outline
+                        type="button"
+                        onClick={() => history.push(`/discipline/editSession/${item.id}`)}
+                      >
+                        Editar
+                      </Button>
+                    </InputGroupAddon>
+                  </InputGroup>
+                </Col>
+              ))}
+              <Col md="12" sm="12" className="mt-2">
+                <Button
+                  color="primary"
+                  outline
+                  type="button"
+                  onClick={() => history.push(`/discipline/session/${disciplineId}`)}
+                >
+                  Criar Seção
+                </Button>
+              </Col>
               <Col className="mt-6">
                 <Button type="submit" color="default" block>{ load }</Button>
               </Col>

@@ -28,7 +28,6 @@ import "../../assets/css/react-activity.css";
 // import Carousel from "react-multi-carousel";
 import api from "../../services/api";
 import PageHeader from "../../components/PageHeader";
-import SessionModal from "../../components/Utils/SessionModal";
 
 import "react-multi-carousel/lib/styles.css";
 
@@ -66,7 +65,7 @@ export default function NewDiscipline() {
       })
       if (response.status == 200) {
         notify("fas fa-check", "success", "Sucesso!", "Administrador cadastrado");
-        setSessionModal(true)
+        history.push(`/discipline/session/${response.data.id}`);
       }
 
     } catch (error) {
@@ -94,26 +93,6 @@ export default function NewDiscipline() {
       autoDismiss: 2,
     };
     inputRef.current.notificationAlert(options);
-  };
-
-
-
-  const Sessions = (props) => {
-    return (
-      <Col md="12" sm="12">
-        <Button
-          className="btn btn-icon btn-danger btn2"
-          // onClick={(e) => {
-          //   const pivot = session.lesson.filter((item, iterableIndex) => props.index !== iterableIndex);
-          //   setSession(pivot);
-          // }}
-        >
-          <span className="btn-inner--icon">
-            <i className="fas fa-trash" />
-          </span>
-        </Button>
-      </Col>
-    );
   };
 
   return (
@@ -198,27 +177,6 @@ export default function NewDiscipline() {
                     </InputGroup>
                   </FormGroup>
                 </Col>
-                {/* {session.map((item, index) => (
-                  <Sessions key={index} index={index}/>
-                ))} */}
-                {/* <Col md="12" sm="12" className="ml-3">
-                  <Row className="align-items-center">
-                    <Button
-                      className="btn btn-icon-only"
-                      color="success"
-                      type="button"
-                      onClick={e => {
-                        setSession([
-                          ...session,
-                          session
-                        ])
-                      }}
-                    >
-                      <i className="ni ni-fat-add" />
-                    </Button>
-                    <h3>Adicionar seção</h3>
-                  </Row>
-                </Col> */}
               </Row>
               <Col className="mt-6">
                 <Button type="submit" color="default" block>{ load }</Button>
@@ -227,26 +185,6 @@ export default function NewDiscipline() {
           </CardBody>
         </Card>
       </Container>
-      <Modal
-        className="modal-dialog-centered"
-        size="lg"
-        isOpen={sessionModal}
-        // toggle={() => handleLogin()}
-      >
-        <div className="modal-header">
-          <span style={{ fontSize: 18, fontWeight: "bold" }}>Criar Seção</span>
-          <button
-            aria-label="Close"
-            className="close"
-            data-dismiss="modal"
-            type="button"
-            onClick={() => setSessionModal(false)}
-          >
-            <span aria-hidden>×</span>
-          </button>
-        </div>
-        <SessionModal />
-      </Modal>
     </>
   );
 }
