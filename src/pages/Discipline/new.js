@@ -76,23 +76,18 @@ export default function NewDiscipline() {
     setLoad(<Spinner color="#FFF" />);
 
     const formData = new FormData();
-    formData.append('file', {
-      uri: file.path,
-      type: file.type,
-      name: `${Date.now()}`
-    });
+    formData.append('file', file);
 
     try {
-      await api.post(`discipline/image/${id}`, {formData}, {
+      await api.post(`discipline/image/${id}`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
-          'boundary':   'X-INSOMNIA-BOUNDARY'
+          Authorization: `Bearer ${token}`,
         }
       })
 
       notify("fas fa-check", "success", "Sucesso!", "Disciplina cadastrada");
-      history.push(`/discipline/session/${id}`);
+      setTimeout(() => history.push(`/discipline/session/${id}`), 3000)
 
     } catch (error) {
       console.log(error);

@@ -40,6 +40,8 @@ export default function ViewDiscipline({ match }) {
   const [showSessions, setshowSessions] = useState(false);
   const [status_feedback, setFeedback] = useState('');
   const [load, setLoad] = useState("Salvar");
+  const [loadDelete, setLoadDelete] = useState("Deletar");
+
 
   const inputRef = useRef('notificationAlert');
   const history = useHistory();
@@ -68,6 +70,47 @@ export default function ViewDiscipline({ match }) {
       }
     })();
   }, [])
+
+  const handleRemoveDiscipline = async (e) => {
+    e.preventDefault();
+
+    setLoadDelete(<Spinner color="#FFF" />);
+    try {
+      await api.delete(`discipline/delete/${disciplineId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      notify("fas fa-check", "warning", "Sucesso! ", " Disciplina Excluída ");
+
+      setTimeout(() => history.goBack(), 3000)
+    } catch (error) {
+      console.log(error);
+      notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao deletar disciplina.");
+    }
+    setLoadDelete("Deletar");
+  }
+
+  const notify = (icon, type, title, message) => {
+    const options = {
+      place: "tr",
+      message: (
+        <div className="alert-text">
+          <span className="alert-title ml-2" data-notify="title">
+            {title}
+          </span>
+          <span data-notify="message" className="ml-2">
+            {message}
+          </span>
+        </div>
+      ),
+      type,
+      icon,
+      autoDismiss: 2,
+    };
+    inputRef.current.notificationAlert(options);
+  };
 
   return (
     <>
@@ -189,6 +232,9 @@ export default function ViewDiscipline({ match }) {
               </Col>
               <Col className="mt-6">
                 <Button type="submit" color="default" block>{ load }</Button>
+              </Col>
+              <Col className="mt-6 d-flex justify-content-end">
+                <Button type="button" color="danger" onClick={handleRemoveDiscipline}>{ loadDelete }</Button>
               </Col>
             </Form>
           </CardBody>
