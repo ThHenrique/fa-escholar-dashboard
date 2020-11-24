@@ -39,6 +39,7 @@ export default function NewDiscipline() {
   const [objectives, setObjectives] = useState('')
   const [price, setPrice] = useState('')
   const [about, setAbout] = useState('')
+  const [file, setFile] = useState()
   const inputRef = useRef("notificationAlert");
   const [sessionModal, setSessionModal] = useState(true);
 
@@ -63,13 +64,39 @@ export default function NewDiscipline() {
           Authorization: `Bearer ${token}`,
         }
       })
-      if (response.status == 200) {
-        notify("fas fa-check", "success", "Sucesso!", "Administrador cadastrado");
-        history.push(`/discipline/session/${response.data.id}`);
-      }
+      handleImage(response.data.id);
 
     } catch (error) {
       notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao realizar o cadastro.");
+    }
+    setLoad("Salvar");
+  }
+
+  const handleImage = async (id) => {
+    setLoad(<Spinner color="#FFF" />);
+
+    const formData = new FormData();
+    formData.append('file', {
+      uri: file.path,
+      type: file.type,
+      name: `${Date.now()}`
+    });
+
+    try {
+      await api.post(`discipline/image/${id}`, {formData}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+          'boundary':   'X-INSOMNIA-BOUNDARY'
+        }
+      })
+
+      notify("fas fa-check", "success", "Sucesso!", "Disciplina cadastrada");
+      history.push(`/discipline/session/${id}`);
+
+    } catch (error) {
+      console.log(error);
+      notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao enviar a capa.");
     }
     setLoad("Salvar");
   }
@@ -94,6 +121,42 @@ export default function NewDiscipline() {
     };
     inputRef.current.notificationAlert(options);
   };
+
+  const File = (props) => {
+    return (
+      <>
+        <Card>
+          <CardImg
+            key={props.file}
+            id="background"
+            className={props.images ? "has-background" : ""}
+            style={{
+              backgroundImage: `url(${URL.createObjectURL(props.file)})`,
+              minHeight: 180,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          <CardBody className="text-center">
+            <Button
+              onClick={() => setFile()}
+              className="btn btn-danger"
+            >
+              Remover
+            </Button>
+          </CardBody>
+          <div
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}>
+            {props.file.name}
+          </div>
+        </Card>
+      </>
+    );
+  }
 
   return (
     <>
@@ -176,6 +239,32 @@ export default function NewDiscipline() {
                       />
                     </InputGroup>
                   </FormGroup>
+                </Col>
+                <Col md={12} sm={12}>
+                  <FormGroup>
+                    <h3>Capa</h3>
+                    <Button
+                      color="primary"
+                      outline
+                      type="button"
+                      tag="label"
+                    >
+                      <span>Adicione uma capa</span>
+                      <input
+                        style={{ display: "none" }}
+                        type="file"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          setFile(file)
+                        }}
+                      />
+                    </Button>
+                  </FormGroup>
+                </Col>
+                <Col md={4} sm={12}>
+                  {file && (
+                    <File file={file}/>
+                  )}
                 </Col>
               </Row>
               <Col className="mt-6">
