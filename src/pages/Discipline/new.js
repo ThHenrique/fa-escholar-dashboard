@@ -87,7 +87,8 @@ export default function NewDiscipline() {
       })
 
       notify("fas fa-check", "success", "Sucesso!", "Disciplina cadastrada");
-      setTimeout(() => history.push(`/discipline/session/${id}`), 3000)
+      setTimeout(() => history.push(`/discipline/session/${id}/0`), 3000)
+
 
     } catch (error) {
       console.log(error);
