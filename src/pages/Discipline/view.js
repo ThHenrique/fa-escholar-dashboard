@@ -73,7 +73,6 @@ export default function ViewDiscipline({ match }) {
 
   async function handleRemoveSession(sessionId) {
 
-    setLoadDelete(<Spinner color="#FFF" />);
     try {
       await api.delete(`discipline/session/delete/${disciplineId}/${sessionId}`);
 
@@ -83,7 +82,6 @@ export default function ViewDiscipline({ match }) {
       console.log(error);
       notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao deletar seção.");
     }
-    setLoadDelete("Deletar");
   }
 
   const handleRemoveDiscipline = async (e) => {

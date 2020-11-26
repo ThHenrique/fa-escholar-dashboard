@@ -69,6 +69,7 @@ export default function Session({ match }) {
   }
 
   const handleLesson = (lesson) => {
+    getSession()
     setAddLesson(false)
     setLesson(lesson);
     setAddLesson(true)
@@ -95,16 +96,28 @@ export default function Session({ match }) {
     }
   }
 
+  async function handleRemoveLesson(lessonId) {
+    try {
+      await api.delete(`discipline/session/lesson/delete/${disciplineId}/${sessionId}/${lessonId}`);
+
+      setLessons(currentSession => currentSession.filter(item => item.id !== lessonId))
+      notify("fas fa-check", "warning", "Sucesso! ", " Aula Excluída ");
+    } catch (error) {
+      console.log(error);
+      notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao deletar aula.");
+    }
+  }
+
   const notify = (icon, type, title, message) => {
     const options = {
       place: "tr",
       message: (
         <div className="alert-text">
-          <span className="alert-title" data-notify="title">
+          <span className="alert-title ml-2" data-notify="title">
             {" "}
             {title}
           </span>
-          <span data-notify="message">
+          <span data-notify="message" className="ml-2">
             {message}
           </span>
         </div>
@@ -174,6 +187,14 @@ export default function Session({ match }) {
                           onClick={() => handleLesson(item)}
                         >
                           Editar
+                        </Button>
+                        <Button
+                          className="btn btn-icon btn-danger btn2"
+                          onClick={() => handleRemoveLesson(item.id)}
+                        >
+                        <span className="btn-inner--icon">
+                          <i class="fas fa-trash" />
+                        </span>
                         </Button>
                       </InputGroupAddon>
                     </InputGroup>
