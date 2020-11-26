@@ -59,7 +59,7 @@ export default function Routes() {
         <PrivateRoute exact path="/discipline" component={Discipline} />
         <PrivateRoute exact path="/discipline/new" component={NewDiscipline} />
         <PrivateRoute exact path="/discipline/:id" component={ViewDiscipline} />
-        <PrivateRoute exact path="/discipline/session/:id" component={Session} />
+        <PrivateRoute exact path="/discipline/session/:id/:sessionId" component={Session} />
         <PrivateRoute exact path="/discipline/editSession/:id" component={EditSession} />
 
 

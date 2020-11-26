@@ -71,6 +71,21 @@ export default function ViewDiscipline({ match }) {
     })();
   }, [])
 
+  async function handleRemoveSession(sessionId) {
+
+    setLoadDelete(<Spinner color="#FFF" />);
+    try {
+      await api.delete(`discipline/session/delete/${disciplineId}/${sessionId}`);
+
+      setSessions(currentSession => currentSession.filter(item => item.id !== sessionId))
+      notify("fas fa-check", "warning", "Sucesso! ", " Seção Excluída ");
+    } catch (error) {
+      console.log(error);
+      notify("fas fa-times", "danger", "Erro!", "Ocorreu um erro ao deletar seção.");
+    }
+    setLoadDelete("Deletar");
+  }
+
   const handleRemoveDiscipline = async (e) => {
     e.preventDefault();
 
@@ -200,21 +215,29 @@ export default function ViewDiscipline({ match }) {
               </Row>
               <h3>Seções</h3>
               {sessions.map(item => (
-                <Col md={5} className="mt-1">
+                <Col md={5} className="mt-2">
                   <InputGroup>
                     <Input
                       value={item.name}
                       disabled
                       type="text"
-                    />
+                      />
                     <InputGroupAddon addonType="append">
                       <Button
                         color="primary"
                         outline
                         type="button"
-                        onClick={() => history.push(`/discipline/editSession/${item.id}`)}
+                        onClick={() => history.push(`/discipline/session/${disciplineId}/${item.id}`)}
                       >
                         Editar
+                      </Button>
+                      <Button
+                        className="btn btn-icon btn-danger btn2"
+                        onClick={() => handleRemoveSession(item.id)}
+                      >
+                      <span className="btn-inner--icon">
+                        <i class="fas fa-trash" />
+                      </span>
                       </Button>
                     </InputGroupAddon>
                   </InputGroup>
@@ -225,7 +248,7 @@ export default function ViewDiscipline({ match }) {
                   color="primary"
                   outline
                   type="button"
-                  onClick={() => history.push(`/discipline/session/${disciplineId}`)}
+                  onClick={() => history.push(`/discipline/session/${disciplineId}/0`)}
                 >
                   Criar Seção
                 </Button>
