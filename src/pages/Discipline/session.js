@@ -69,7 +69,7 @@ export default function Session({ match }) {
   }
 
   const handleLesson = (lesson) => {
-    getSession()
+    if (match.params.sessionId != 0) getSession()
     setAddLesson(false)
     setLesson(lesson);
     setAddLesson(true)

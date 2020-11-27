@@ -43,7 +43,7 @@ export default function LessonCard({ sessionId, disciplineId, lesson }) {
       setDescription(lesson.description);
       setTypeOf(typeof(lesson.url))
       setFiles(lesson.url)
-      let type = lesson.url.substr(-3)
+      let type = lesson.url.substr(-4)
       setTypeFile(type)
     }
   }, [lesson])
@@ -54,7 +54,7 @@ export default function LessonCard({ sessionId, disciplineId, lesson }) {
         <>
           <Card>
             <>
-              {props.file.type != 'video/mp4' ? (
+              {(props.file.type == 'image/jpeg' || props.file.type == 'image/png') ? (
                 <CardImg
                   key={props.file}
                   id="background"
@@ -66,7 +66,7 @@ export default function LessonCard({ sessionId, disciplineId, lesson }) {
                     backgroundRepeat: "no-repeat",
                   }}
                 />
-              ):(
+              ) : (
                 <ReactPlayer controls url={URL.createObjectURL(props.file)} />
               )}
               <div
@@ -93,7 +93,7 @@ export default function LessonCard({ sessionId, disciplineId, lesson }) {
     else
       return (
       <Card>
-        {typeFile != 'mp4' ? (
+        {typeFile != '.mp4' ? (
           <Col md="12" sm="12">
             <img
               alt="..."
